@@ -24,20 +24,33 @@ namespace Check_Disk
             }
         }
 
-        private void zacznijTest_Click(object sender, EventArgs e)
+        private void zacznijTest_Click(object sender, EventArgs ev)
         {
-            logika.rozpoznajTest();
+            try
+            {
+                logika.rozpoznajTest();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
-        private void podajSciezke_Click(object sender, EventArgs e)
+        private void podajSciezke_Click(object sender, EventArgs ev)
         {
             if (zapisButton.Checked || zapisOdczytButton.Checked)
             {
                 DialogResult res = FolderDialog.ShowDialog(this);
                 if (res == DialogResult.OK)
                 {
-                    sciezka = FolderDialog.SelectedPath;
-                    wyswietlSciezke.Text = sciezka;
+                    try
+                    {
+                        sciezka = FolderDialog.SelectedPath;
+                        wyswietlSciezke.Text = sciezka;
+                    }catch(Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
                 }
             }
             else if (odczytButton.Checked)
@@ -45,8 +58,15 @@ namespace Check_Disk
                 DialogResult res = FileDialog.ShowDialog(this);
                 if (res == DialogResult.OK)
                 {
-                    sciezka = FileDialog.FileName;
-                    wyswietlSciezke.Text = sciezka;
+                    try
+                    {
+                        sciezka = FileDialog.FileName;
+                        wyswietlSciezke.Text = sciezka;
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
                 }
             }
             else
@@ -57,17 +77,38 @@ namespace Check_Disk
 
         private void ZapiszConfig_Click(object sender, EventArgs e)
         {
-            logika.zapiszConfig();
+            try
+            {
+                logika.zapiszConfig();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void WczytajConfig_Click(object sender, EventArgs e)
         {
-            logika.wczytajConfig();
+            try 
+            { 
+                logika.wczytajConfig();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Kopiuj_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(wynikiKopia);
+            try
+            {
+                Clipboard.SetText(wynikiKopia);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

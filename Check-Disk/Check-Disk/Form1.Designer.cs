@@ -62,9 +62,9 @@ namespace Check_Disk
             // zapisButton
             // 
             this.zapisButton.AutoSize = true;
-            this.zapisButton.Location = new System.Drawing.Point(12, 12);
+            this.zapisButton.Location = new System.Drawing.Point(10, 10);
             this.zapisButton.Name = "zapisButton";
-            this.zapisButton.Size = new System.Drawing.Size(53, 19);
+            this.zapisButton.Size = new System.Drawing.Size(51, 17);
             this.zapisButton.TabIndex = 1;
             this.zapisButton.TabStop = true;
             this.zapisButton.Text = "Zapis";
@@ -73,9 +73,9 @@ namespace Check_Disk
             // odczytButton
             // 
             this.odczytButton.AutoSize = true;
-            this.odczytButton.Location = new System.Drawing.Point(12, 37);
+            this.odczytButton.Location = new System.Drawing.Point(10, 32);
             this.odczytButton.Name = "odczytButton";
-            this.odczytButton.Size = new System.Drawing.Size(62, 19);
+            this.odczytButton.Size = new System.Drawing.Size(58, 17);
             this.odczytButton.TabIndex = 2;
             this.odczytButton.TabStop = true;
             this.odczytButton.Text = "Odczyt";
@@ -84,9 +84,9 @@ namespace Check_Disk
             // zapisOdczytButton
             // 
             this.zapisOdczytButton.AutoSize = true;
-            this.zapisOdczytButton.Location = new System.Drawing.Point(12, 62);
+            this.zapisOdczytButton.Location = new System.Drawing.Point(10, 54);
             this.zapisOdczytButton.Name = "zapisOdczytButton";
-            this.zapisOdczytButton.Size = new System.Drawing.Size(95, 19);
+            this.zapisOdczytButton.Size = new System.Drawing.Size(89, 17);
             this.zapisOdczytButton.TabIndex = 3;
             this.zapisOdczytButton.TabStop = true;
             this.zapisOdczytButton.Text = "Zapis\\Odczyt";
@@ -94,7 +94,7 @@ namespace Check_Disk
             // 
             // iloscPlikow
             // 
-            this.iloscPlikow.Location = new System.Drawing.Point(495, 8);
+            this.iloscPlikow.Location = new System.Drawing.Point(424, 7);
             this.iloscPlikow.Maximum = new decimal(new int[] {
             50,
             0,
@@ -106,7 +106,7 @@ namespace Check_Disk
             0,
             0});
             this.iloscPlikow.Name = "iloscPlikow";
-            this.iloscPlikow.Size = new System.Drawing.Size(96, 23);
+            this.iloscPlikow.Size = new System.Drawing.Size(82, 20);
             this.iloscPlikow.TabIndex = 4;
             this.iloscPlikow.Value = new decimal(new int[] {
             1,
@@ -117,17 +117,17 @@ namespace Check_Disk
             // TextIloscPlikow
             // 
             this.TextIloscPlikow.AutoSize = true;
-            this.TextIloscPlikow.Location = new System.Drawing.Point(408, 10);
+            this.TextIloscPlikow.Location = new System.Drawing.Point(350, 9);
             this.TextIloscPlikow.Name = "TextIloscPlikow";
-            this.TextIloscPlikow.Size = new System.Drawing.Size(81, 15);
+            this.TextIloscPlikow.Size = new System.Drawing.Size(74, 13);
             this.TextIloscPlikow.TabIndex = 5;
             this.TextIloscPlikow.Text = "Liczba plików:";
             // 
             // zacznijTest
             // 
-            this.zacznijTest.Location = new System.Drawing.Point(496, 372);
+            this.zacznijTest.Location = new System.Drawing.Point(425, 322);
             this.zacznijTest.Name = "zacznijTest";
-            this.zacznijTest.Size = new System.Drawing.Size(127, 23);
+            this.zacznijTest.Size = new System.Drawing.Size(109, 20);
             this.zacznijTest.TabIndex = 6;
             this.zacznijTest.Text = "Rozpocznij test";
             this.zacznijTest.UseVisualStyleBackColor = true;
@@ -136,9 +136,9 @@ namespace Check_Disk
             // preDifiniowanyTest
             // 
             this.preDifiniowanyTest.AutoSize = true;
-            this.preDifiniowanyTest.Location = new System.Drawing.Point(12, 87);
+            this.preDifiniowanyTest.Location = new System.Drawing.Point(10, 75);
             this.preDifiniowanyTest.Name = "preDifiniowanyTest";
-            this.preDifiniowanyTest.Size = new System.Drawing.Size(129, 19);
+            this.preDifiniowanyTest.Size = new System.Drawing.Size(117, 17);
             this.preDifiniowanyTest.TabIndex = 7;
             this.preDifiniowanyTest.TabStop = true;
             this.preDifiniowanyTest.Text = "Predefiniowany test";
@@ -146,9 +146,9 @@ namespace Check_Disk
             // 
             // RozmiarPlikow
             // 
-            this.RozmiarPlikow.Location = new System.Drawing.Point(495, 37);
+            this.RozmiarPlikow.Location = new System.Drawing.Point(424, 32);
             this.RozmiarPlikow.Maximum = new decimal(new int[] {
-            4096,
+            2048,
             0,
             0,
             0});
@@ -158,10 +158,10 @@ namespace Check_Disk
             0,
             0});
             this.RozmiarPlikow.Name = "RozmiarPlikow";
-            this.RozmiarPlikow.Size = new System.Drawing.Size(96, 23);
+            this.RozmiarPlikow.Size = new System.Drawing.Size(82, 20);
             this.RozmiarPlikow.TabIndex = 8;
             this.RozmiarPlikow.Value = new decimal(new int[] {
-            50,
+            100,
             0,
             0,
             0});
@@ -169,27 +169,27 @@ namespace Check_Disk
             // TextPodajRozmiar
             // 
             this.TextPodajRozmiar.AutoSize = true;
-            this.TextPodajRozmiar.Location = new System.Drawing.Point(300, 39);
+            this.TextPodajRozmiar.Location = new System.Drawing.Point(257, 34);
             this.TextPodajRozmiar.Name = "TextPodajRozmiar";
-            this.TextPodajRozmiar.Size = new System.Drawing.Size(189, 15);
+            this.TextPodajRozmiar.Size = new System.Drawing.Size(167, 13);
             this.TextPodajRozmiar.TabIndex = 9;
             this.TextPodajRozmiar.Text = "Podaj rozmiar pojedyńczego pliku:";
             // 
             // weryfikacja
             // 
             this.weryfikacja.AutoSize = true;
-            this.weryfikacja.Location = new System.Drawing.Point(345, 87);
+            this.weryfikacja.Location = new System.Drawing.Point(296, 75);
             this.weryfikacja.Name = "weryfikacja";
-            this.weryfikacja.Size = new System.Drawing.Size(144, 19);
+            this.weryfikacja.Size = new System.Drawing.Size(133, 17);
             this.weryfikacja.TabIndex = 10;
             this.weryfikacja.Text = "Weryfikacja zgodności";
             this.weryfikacja.UseVisualStyleBackColor = true;
             // 
             // podajSciezke
             // 
-            this.podajSciezke.Location = new System.Drawing.Point(12, 123);
+            this.podajSciezke.Location = new System.Drawing.Point(10, 107);
             this.podajSciezke.Name = "podajSciezke";
-            this.podajSciezke.Size = new System.Drawing.Size(95, 23);
+            this.podajSciezke.Size = new System.Drawing.Size(81, 20);
             this.podajSciezke.TabIndex = 11;
             this.podajSciezke.Text = "Podaj ścieżkę";
             this.podajSciezke.UseVisualStyleBackColor = true;
@@ -198,17 +198,17 @@ namespace Check_Disk
             // wyswietlSciezke
             // 
             this.wyswietlSciezke.AutoSize = true;
-            this.wyswietlSciezke.Location = new System.Drawing.Point(113, 127);
+            this.wyswietlSciezke.Location = new System.Drawing.Point(97, 110);
             this.wyswietlSciezke.Name = "wyswietlSciezke";
-            this.wyswietlSciezke.Size = new System.Drawing.Size(0, 15);
+            this.wyswietlSciezke.Size = new System.Drawing.Size(0, 13);
             this.wyswietlSciezke.TabIndex = 12;
             // 
             // TextMB
             // 
             this.TextMB.AutoSize = true;
-            this.TextMB.Location = new System.Drawing.Point(597, 39);
+            this.TextMB.Location = new System.Drawing.Point(512, 34);
             this.TextMB.Name = "TextMB";
-            this.TextMB.Size = new System.Drawing.Size(25, 15);
+            this.TextMB.Size = new System.Drawing.Size(23, 13);
             this.TextMB.TabIndex = 13;
             this.TextMB.Text = "MB";
             // 
@@ -221,16 +221,16 @@ namespace Check_Disk
             // PojemnikBledow
             // 
             this.PojemnikBledow.AutoSize = true;
-            this.PojemnikBledow.Location = new System.Drawing.Point(12, 376);
+            this.PojemnikBledow.Location = new System.Drawing.Point(10, 326);
             this.PojemnikBledow.Name = "PojemnikBledow";
-            this.PojemnikBledow.Size = new System.Drawing.Size(0, 15);
+            this.PojemnikBledow.Size = new System.Drawing.Size(0, 13);
             this.PojemnikBledow.TabIndex = 14;
             // 
             // ZapiszConfig
             // 
-            this.ZapiszConfig.Location = new System.Drawing.Point(495, 314);
+            this.ZapiszConfig.Location = new System.Drawing.Point(424, 272);
             this.ZapiszConfig.Name = "ZapiszConfig";
-            this.ZapiszConfig.Size = new System.Drawing.Size(127, 23);
+            this.ZapiszConfig.Size = new System.Drawing.Size(109, 20);
             this.ZapiszConfig.TabIndex = 15;
             this.ZapiszConfig.Text = "Zapisz konfiguracje";
             this.ZapiszConfig.UseVisualStyleBackColor = true;
@@ -239,15 +239,15 @@ namespace Check_Disk
             // LiczbaWatkowText
             // 
             this.LiczbaWatkowText.AutoSize = true;
-            this.LiczbaWatkowText.Location = new System.Drawing.Point(12, 171);
+            this.LiczbaWatkowText.Location = new System.Drawing.Point(10, 148);
             this.LiczbaWatkowText.Name = "LiczbaWatkowText";
-            this.LiczbaWatkowText.Size = new System.Drawing.Size(84, 15);
+            this.LiczbaWatkowText.Size = new System.Drawing.Size(78, 13);
             this.LiczbaWatkowText.TabIndex = 17;
             this.LiczbaWatkowText.Text = "Liczba wątków";
             // 
             // LiczbaWatkow
             // 
-            this.LiczbaWatkow.Location = new System.Drawing.Point(102, 169);
+            this.LiczbaWatkow.Location = new System.Drawing.Point(87, 146);
             this.LiczbaWatkow.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -259,7 +259,7 @@ namespace Check_Disk
             0,
             0});
             this.LiczbaWatkow.Name = "LiczbaWatkow";
-            this.LiczbaWatkow.Size = new System.Drawing.Size(52, 23);
+            this.LiczbaWatkow.Size = new System.Drawing.Size(45, 20);
             this.LiczbaWatkow.TabIndex = 18;
             this.LiczbaWatkow.Value = new decimal(new int[] {
             1,
@@ -270,9 +270,9 @@ namespace Check_Disk
             // ZapisStat
             // 
             this.ZapisStat.AutoSize = true;
-            this.ZapisStat.Location = new System.Drawing.Point(149, 224);
+            this.ZapisStat.Location = new System.Drawing.Point(128, 194);
             this.ZapisStat.Name = "ZapisStat";
-            this.ZapisStat.Size = new System.Drawing.Size(93, 15);
+            this.ZapisStat.Size = new System.Drawing.Size(89, 13);
             this.ZapisStat.TabIndex = 19;
             this.ZapisStat.Text = "Zapis: 3500MB/s";
             this.ZapisStat.Visible = false;
@@ -280,18 +280,18 @@ namespace Check_Disk
             // OdczytStaty
             // 
             this.OdczytStaty.AutoSize = true;
-            this.OdczytStaty.Location = new System.Drawing.Point(300, 224);
+            this.OdczytStaty.Location = new System.Drawing.Point(257, 194);
             this.OdczytStaty.Name = "OdczytStaty";
-            this.OdczytStaty.Size = new System.Drawing.Size(102, 15);
+            this.OdczytStaty.Size = new System.Drawing.Size(96, 13);
             this.OdczytStaty.TabIndex = 20;
             this.OdczytStaty.Text = "Odczyt: 3000MB/s";
             this.OdczytStaty.Visible = false;
             // 
             // WczytajConfig
             // 
-            this.WczytajConfig.Location = new System.Drawing.Point(495, 343);
+            this.WczytajConfig.Location = new System.Drawing.Point(424, 297);
             this.WczytajConfig.Name = "WczytajConfig";
-            this.WczytajConfig.Size = new System.Drawing.Size(127, 23);
+            this.WczytajConfig.Size = new System.Drawing.Size(109, 20);
             this.WczytajConfig.TabIndex = 21;
             this.WczytajConfig.Text = "Wczytaj konfiguracje";
             this.WczytajConfig.UseVisualStyleBackColor = true;
@@ -299,9 +299,9 @@ namespace Check_Disk
             // 
             // Kopiuj
             // 
-            this.Kopiuj.Location = new System.Drawing.Point(216, 242);
+            this.Kopiuj.Location = new System.Drawing.Point(185, 210);
             this.Kopiuj.Name = "Kopiuj";
-            this.Kopiuj.Size = new System.Drawing.Size(104, 23);
+            this.Kopiuj.Size = new System.Drawing.Size(89, 20);
             this.Kopiuj.TabIndex = 22;
             this.Kopiuj.Text = "Kopiuj wyniki";
             this.Kopiuj.UseVisualStyleBackColor = true;
@@ -311,18 +311,18 @@ namespace Check_Disk
             // Zgodnosc
             // 
             this.Zgodnosc.AutoSize = true;
-            this.Zgodnosc.Location = new System.Drawing.Point(364, 109);
+            this.Zgodnosc.Location = new System.Drawing.Point(312, 94);
             this.Zgodnosc.Name = "Zgodnosc";
-            this.Zgodnosc.Size = new System.Drawing.Size(38, 15);
+            this.Zgodnosc.Size = new System.Drawing.Size(35, 13);
             this.Zgodnosc.TabIndex = 23;
             this.Zgodnosc.Text = "label1";
             this.Zgodnosc.Visible = false;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(635, 407);
+            this.ClientSize = new System.Drawing.Size(544, 353);
             this.Controls.Add(this.Zgodnosc);
             this.Controls.Add(this.Kopiuj);
             this.Controls.Add(this.WczytajConfig);
