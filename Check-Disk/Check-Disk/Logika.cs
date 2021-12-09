@@ -8,7 +8,7 @@ namespace Check_Disk
     public class Logika
     {
         Form1 f;
-        String DomyslnaSciezka = Directory.GetCurrentDirectory();
+        string DomyslnaSciezka = Directory.GetCurrentDirectory();
         Task taskJob;
         static string ConfigFileDirectory = Directory.GetCurrentDirectory() + @"\config.txt";
 
@@ -225,7 +225,7 @@ namespace Check_Disk
         public bool SprawdzMiejsceNaDysku(long size,string path)
         {
             long a = 0;
-            string dysk = path[0].ToString() + path[1].ToString() + path[2].ToString();
+            string dysk = Path.GetPathRoot(path);
             DriveInfo drive = new DriveInfo(dysk);
             
             if (drive.IsReady)
@@ -311,7 +311,7 @@ namespace Check_Disk
             for (int i = 0; i < 3; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                File.WriteAllBytes(path + i + ".txt", new byte[bytes]);
+                File.WriteAllBytes(Path.Combine(path, i.ToString(), ".txt"), new byte[bytes]);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = (CalcBToMB(bytes) / Math.Round(elapsedMs / 1000,3));
@@ -348,7 +348,7 @@ namespace Check_Disk
             {
                 if (Directory.Exists(path + nazwaFolderu))
                 {
-                    nazwaFolderu = nazwaFolderu + i;
+                    nazwaFolderu += i;
                     i++;
                 }
                 else
