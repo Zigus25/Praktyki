@@ -28,22 +28,43 @@ namespace Check_Disk
                 {
                     if (SprawdzMiejsceNaDysku(CalcMBToB(100*(Environment.ProcessorCount*3)), DomyslnaSciezka))
                     {
-                        DomyslnaSciezka = CreateFolder(DomyslnaSciezka);
-                        SprawdzPoprawnosc(DomyslnaSciezka);
-                        for (int j = 0; j < Environment.ProcessorCount; j++)
+                        try
                         {
-                            taskJob = Task.Factory.StartNew(() => {
-                                double wynikteraz = WriteTest(CalcMBToB(100), DomyslnaSciezka + @"\testowyplik" + j);
-                                wynikZapis += wynikteraz;
-                            });
-                            Thread.Sleep(200);
+                            DomyslnaSciezka = CreateFolder(DomyslnaSciezka);
+                            SprawdzPoprawnosc(DomyslnaSciezka);
+                        }
+                        catch (Exception e)
+                        {
+                            f.PokazError(e);
                         }
                         for (int j = 0; j < Environment.ProcessorCount; j++)
                         {
-                            taskJob = Task.Factory.StartNew(() => {
+                            try
+                            {
+                                taskJob = Task.Factory.StartNew(() => {
+                                double wynikteraz = WriteTest(CalcMBToB(100), DomyslnaSciezka + @"\testowyplik" + j);
+                                wynikZapis += wynikteraz;
+                                });
+                                Thread.Sleep(200);
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
+                        }
+                        for (int j = 0; j < Environment.ProcessorCount; j++)
+                        {
+                            try
+                            {
+                                taskJob = Task.Factory.StartNew(() => {
                                 double wynikterazOdczyt = ReadTest(DomyslnaSciezka + @"\testowyplik10.txt");
                                 wynikOdczyt += wynikterazOdczyt;
-                            });
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
                         }
                         Task.WaitAll(taskJob);
 
@@ -56,17 +77,31 @@ namespace Check_Disk
                         f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / Environment.ProcessorCount, 2) + @"MB\s";
                         f.wynikiKopia += " Odczyt: " + Math.Round(wynikOdczyt / Environment.ProcessorCount, 2) + @"MB\s";
                         f.OdczytStaty.Visible = true;
-                        DeleteTestFileFolder(DomyslnaSciezka);
-                    }
+                        try 
+                        { 
+                            DeleteTestFileFolder(DomyslnaSciezka);
+                        }
+                        catch (Exception e)
+                        {
+                            f.PokazError(e);
+                        }
+                }
                 }
                 else if (f.odczytButton.Checked)
                 {
                     for (int j = 0; j < nWL / LPlikow; j++)
                     {
-                        taskJob = Task.Factory.StartNew(() => {
-                            double wynikterazOdczyt = ReadTest(f.sciezka);
-                            wynikOdczyt += wynikterazOdczyt;
-                        });
+                        try
+                        {
+                            taskJob = Task.Factory.StartNew(() => {
+                                double wynikterazOdczyt = ReadTest(f.sciezka);
+                                wynikOdczyt += wynikterazOdczyt;
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            f.PokazError(e);
+                        }
                     }
                     Task.WaitAll(taskJob);
 
@@ -81,17 +116,31 @@ namespace Check_Disk
                         f.sciezka = CreateFolder(f.sciezka);
                         if (f.weryfikacja.Checked)
                         {
-                            SprawdzPoprawnosc(f.sciezka);
+                            try 
+                            { 
+                                SprawdzPoprawnosc(f.sciezka);
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
                         }
                         for (int i = 0; i < LPlikow; i++)
                         {
                             for (int j = 0; j < nWL / LPlikow; j++)
                             {
-                                taskJob = Task.Factory.StartNew(() => {
-                                    double wynikteraz = WriteTest(CalcMBToB(Convert.ToInt32(f.RozmiarPlikow.Value)), f.sciezka + @"\testowyplik" + j);
-                                    wynikZapis += wynikteraz;
-                                });
-                                Thread.Sleep(200);
+                                try
+                                {
+                                    taskJob = Task.Factory.StartNew(() => {
+                                        double wynikteraz = WriteTest(CalcMBToB(Convert.ToInt32(f.RozmiarPlikow.Value)), f.sciezka + @"\testowyplik" + j);
+                                        wynikZapis += wynikteraz;
+                                    });
+                                    Thread.Sleep(200);
+                                }
+                                catch (Exception e)
+                                {
+                                    f.PokazError(e);
+                                }
                             }
                         }
                         Task.WaitAll(taskJob);
@@ -99,29 +148,57 @@ namespace Check_Disk
                         f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / (nWL / LPlikow), 2) + @"MB\s";
                         f.ZapisStat.Visible = true;
                         f.Kopiuj.Visible = true;
-                        DeleteTestFileFolder(f.sciezka);
+                        try
+                        {
+                            DeleteTestFileFolder(f.sciezka);
+                        }
+                        catch (Exception e)
+                        {
+                            f.PokazError(e);
+                        }
                     }
                     else if (f.zapisOdczytButton.Checked)
                     {
                         f.sciezka = CreateFolder(f.sciezka);
                         if (f.weryfikacja.Checked)
                         {
-                            SprawdzPoprawnosc(f.sciezka);
+                            try
+                            {
+                                SprawdzPoprawnosc(f.sciezka);
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
                         }
                         for (int j = 0; j < Environment.ProcessorCount; j++)
                         {
-                            taskJob = Task.Factory.StartNew(() => {
+                            try
+                            {
+                                taskJob = Task.Factory.StartNew(() => {
                                 double wynikteraz = WriteTest(CalcMBToB(100), f.sciezka + @"\testowyplik" + j);
                                 wynikZapis += wynikteraz;
-                            });
-                            Thread.Sleep(200);
+                                });
+                                Thread.Sleep(200);
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
                         }
                         for (int j = 0; j < Environment.ProcessorCount; j++)
                         {
-                            taskJob = Task.Factory.StartNew(() => {
-                                double wynikterazOdczyt = ReadTest(f.sciezka + @"\testowyplik10.txt");
-                                wynikOdczyt += wynikterazOdczyt;
-                            });
+                            try
+                            {
+                                taskJob = Task.Factory.StartNew(() => {
+                                    double wynikterazOdczyt = ReadTest(f.sciezka + @"\testowyplik10.txt");
+                                    wynikOdczyt += wynikterazOdczyt;
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                f.PokazError(e);
+                            }
                         }
                         Task.WaitAll(taskJob);
 
@@ -234,7 +311,7 @@ namespace Check_Disk
             for (int i = 0; i < 3; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                System.IO.File.WriteAllBytes(path + i + ".txt", new byte[bytes]);
+                File.WriteAllBytes(path + i + ".txt", new byte[bytes]);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = (CalcBToMB(bytes) / Math.Round(elapsedMs / 1000,3));
@@ -247,11 +324,11 @@ namespace Check_Disk
         public double ReadTest(string path)
         {
             double wyniki = 0.0;
-            int rozmiar = CalcBToMB((int)new System.IO.FileInfo(path).Length);
+            int rozmiar = CalcBToMB((int)new FileInfo(path).Length);
             for (int i = 0; i < 3; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                System.IO.File.ReadAllText(path);
+                File.ReadAllText(path);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = rozmiar / Math.Round(elapsedMs / 1000, 3);
@@ -291,20 +368,27 @@ namespace Check_Disk
         public void SprawdzPoprawnosc(string path)
         {
             string a = "To jest przykladowy tekst do sprawdzania";
-            StreamWriter wr = new StreamWriter(path + @"\PlikZgodnosci.txt");
-            wr.WriteLine(a);
-            wr.Close();
-            StreamReader re = new StreamReader(path + @"\PlikZgodnosci.txt");
-            if (re.ReadLine().Equals(a))
+            try
             {
-                f.Zgodnosc.Text = "Pliki są zapisywane poprawnie";
-                f.Zgodnosc.Visible = true;
+                StreamWriter wr = new StreamWriter(path + @"\PlikZgodnosci.txt");
+                wr.WriteLine(a);
+                wr.Close();
+                StreamReader re = new StreamReader(path + @"\PlikZgodnosci.txt");
+                if (re.ReadLine().Equals(a))
+                {
+                    f.Zgodnosc.Text = "Pliki są zapisywane poprawnie";
+                    f.Zgodnosc.Visible = true;
+                }
+                else
+                {
+                    f.Zgodnosc.Text = "Pliki nie są zapisywane poprawnie";
+                    f.Zgodnosc.Visible = true;
+                }
             }
-            else
+            catch (Exception e)
             {
-                f.Zgodnosc.Text = "Pliki nie są zapisywane poprawnie";
-                f.Zgodnosc.Visible = true;
+                f.PokazError(e);
             }
-        }
+}
     }
 }

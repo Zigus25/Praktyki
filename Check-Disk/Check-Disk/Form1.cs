@@ -110,5 +110,10 @@ namespace Check_Disk
                 MessageBox.Show(ex.Message);
             }
         }
+
+        public void PokazError(Exception e)
+        {
+            MessageBox.Show(e.Message);
+        }
     }
 }
