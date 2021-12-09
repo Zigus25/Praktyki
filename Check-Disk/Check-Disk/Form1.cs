@@ -13,8 +13,15 @@ namespace Check_Disk
         {
             InitializeComponent();
             LiczbaWatkow.Maximum = Environment.ProcessorCount;
-            logika.PrzekazForm(this);
-            logika.wczytajConfig();
+            try
+            {
+                logika.PrzekazForm(this);
+                logika.wczytajConfig();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         private void zacznijTest_Click(object sender, EventArgs e)
