@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net452</TargetFramework>
+    <RootNamespace>Check_Disk</RootNamespace>
+    <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>Check_Disk.Program</StartupObject>
+  </PropertyGroup>
+
+
+</Project>
