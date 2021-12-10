@@ -272,12 +272,7 @@ namespace Check_Disk
 
         public void zapiszConfig()
         {
-            int liczbaWatkow = Convert.ToInt32(Math.Round(f.LiczbaWatkow.Value, 0));
-            int rozmiarcplikow = Convert.ToInt32(Math.Round(f.RozmiarPlikow.Value, 0));
-            int liczbaPlikow = Convert.ToInt32(Math.Round(f.iloscPlikow.Value, 0));
-            String Sciezka = f.sciezka;
-            Boolean Weryfikacja = f.weryfikacja.Checked;
-            String zaznaczonaOpcja = "";
+            string zaznaczonaOpcja = "";
             if (f.preDifiniowanyTest.Checked)
             {
                 zaznaczonaOpcja = "Pre";
@@ -294,14 +289,24 @@ namespace Check_Disk
             {
                 zaznaczonaOpcja = "za/od";
             }
-            StreamWriter writer = new StreamWriter(ConfigFileDirectory);
-            writer.WriteLine(liczbaWatkow);
-            writer.WriteLine(rozmiarcplikow);
-            writer.WriteLine(liczbaPlikow);
-            writer.WriteLine(Sciezka);
-            writer.WriteLine(Weryfikacja);
-            writer.WriteLine(zaznaczonaOpcja);
-            writer.Close();
+            var data = new Config[]
+            {
+                new Config()
+                {
+                    LiczbaWatkow = Convert.ToInt32(f.LiczbaWatkow.Value),
+                    RozmiarPlikow = Convert.ToInt32(f.RozmiarPlikow.Value),
+                    LiczbaPlikow = Convert.ToInt32(f.iloscPlikow.Value),
+                    Sciezka = f.sciezka,
+                    Weryfikacja = f.weryfikacja.Checked,
+                    Zaznaczenie = zaznaczonaOpcja
+                }
+            };
+            StreamWriter sw = new StreamWriter(ConfigFileDirectory);
+            foreach (var item in data)
+            {
+                sw.WriteLine(string.Join(item.ToString(),";"));
+            }
+            sw.Close();
         }
 
         public double WriteTest(int whatSizeFile, string path)
