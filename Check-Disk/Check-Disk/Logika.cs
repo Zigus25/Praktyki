@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -299,15 +301,13 @@ namespace Check_Disk
                     Sciezka = f.sciezka,
                     Weryfikacja = f.weryfikacja.Checked,
                     Zaznaczenie = zaznaczonaOpcja
+                   
                 }
             };
-            StreamWriter sw = new StreamWriter(ConfigFileDirectory);
-            foreach (var item in data)
-            {
-                sw.WriteLine(string.Join(item.ToString(),";"));
-            }
-            sw.Close();
+            Zapis.ExportToTextFile(data,ConfigFileDirectory,';');
         }
+
+        
 
         public double WriteTest(int whatSizeFile, string path)
         {
