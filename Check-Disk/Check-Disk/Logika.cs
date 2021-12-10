@@ -187,19 +187,17 @@ namespace Check_Disk
                                 f.PokazError(e);
                             }
                         }
-                        for (int j = 0; j < Environment.ProcessorCount; j++)
+                        Task.WaitAll(taskJob);
+                        try
                         {
-                            try
-                            {
-                                taskJob = Task.Factory.StartNew(() => {
-                                    double wynikterazOdczyt = ReadTest(f.sciezka + @"\testowyplik10.txt");
-                                    wynikOdczyt += wynikterazOdczyt;
-                                });
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
+                            taskJob = Task.Factory.StartNew(() => {
+                                double wynikterazOdczyt = ReadTest(f.sciezka + @"\testowyplik10.txt");
+                                wynikOdczyt += wynikterazOdczyt;
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            f.PokazError(e);
                         }
                         Task.WaitAll(taskJob);
 
@@ -211,7 +209,6 @@ namespace Check_Disk
                         f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
                         f.wynikiKopia += " Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
                         f.OdczytStaty.Visible = true;
-                        Thread.Sleep(2000);
                         DeleteTestFileFolder(f.sciezka);
                     }
                 }
@@ -299,17 +296,19 @@ namespace Check_Disk
 
         public double WriteTest(int whatSizeFile, string path)
         {
+            Random random = new Random();
             int bytes = whatSizeFile;
             double wyniki = 0.0;
             for (int i = 0; i < 3; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                File.WriteAllBytes(Path.Combine(path, i.ToString(), ".txt"), new byte[bytes]);
+                var bity = new byte[bytes];
+                random.NextBytes(bity);
+                File.WriteAllBytes($@"{path}{i}.txt", bity);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = (CalcBToMB(bytes) / Math.Round(elapsedMs / 1000,3));
                 wyniki += wynik;
-                Thread.Sleep(200);
             }
             return Math.Round(wyniki / 3, 2);
         }
@@ -326,7 +325,6 @@ namespace Check_Disk
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = rozmiar / Math.Round(elapsedMs / 1000, 3);
                 wyniki += wynik;
-                Thread.Sleep(200);
             }
 
             return Math.Round(wyniki / 3, 2);
