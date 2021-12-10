@@ -201,14 +201,16 @@ namespace Check_Disk
                         }
                         Task.WaitAll(taskJob);
 
-                        f.ZapisStat.Text = "Zapis: " + Math.Round(wynikZapis / (nWL / LPlikow), 2) + @"MB\s";
-                        f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / (nWL / LPlikow), 2) + @"MB\s";
+                        f.ZapisStat.Text = "Zapis: " + Math.Round(wynikZapis / nWL, 2) + @"MB\s";
+                        f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / nWL, 2) + @"MB\s";
                         f.ZapisStat.Visible = true;
                         f.Kopiuj.Visible = true;
 
                         f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
                         f.wynikiKopia += " Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
                         f.OdczytStaty.Visible = true;
+
+                        Task.WaitAll(taskJob);
                         DeleteTestFileFolder(f.sciezka);
                     }
                 }
@@ -301,9 +303,9 @@ namespace Check_Disk
             double wyniki = 0.0;
             for (int i = 0; i < 3; i++)
             {
-                var watch = System.Diagnostics.Stopwatch.StartNew();
                 var bity = new byte[bytes];
                 random.NextBytes(bity);
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 File.WriteAllBytes($@"{path}{i}.txt", bity);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
@@ -320,7 +322,7 @@ namespace Check_Disk
             for (int i = 0; i < 3; i++)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                File.ReadAllText(path);
+                File.ReadAllBytes(path);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = rozmiar / Math.Round(elapsedMs / 1000, 3);
@@ -358,14 +360,14 @@ namespace Check_Disk
 
         public void SprawdzPoprawnosc(string path)
         {
-            string a = "To jest przykladowy tekst do sprawdzania";
+            Random random = new Random();
             try
             {
-                StreamWriter wr = new StreamWriter(path + @"\PlikZgodnosci.txt");
-                wr.WriteLine(a);
-                wr.Close();
-                StreamReader re = new StreamReader(path + @"\PlikZgodnosci.txt");
-                if (re.ReadLine().Equals(a))
+                var bity = new byte[CalcMBToB(500)];
+                random.NextBytes(bity);
+                File.WriteAllBytes($@"{path}\PlikZgodnosci.txt", bity);
+
+                if (File.ReadAllBytes($@"{path}\PlikZgodnosci.txt").ToString().Contains(bity.ToString()))
                 {
                     f.Zgodnosc.Text = "Pliki są zapisywane poprawnie";
                     f.Zgodnosc.Visible = true;
