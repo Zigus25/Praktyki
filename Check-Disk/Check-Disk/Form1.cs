@@ -16,7 +16,7 @@ namespace Check_Disk
             try
             {
                 logika.PrzekazForm(this);
-                logika.wczytajConfig();
+                logika.WczytajConfig();
             }
             catch (Exception e)
             {
@@ -77,9 +77,36 @@ namespace Check_Disk
 
         private void ZapiszConfig_Click(object sender, EventArgs e)
         {
+            string zaznaczonaOpcja = "";
+            if (preDifiniowanyTest.Checked)
+            {
+                zaznaczonaOpcja = "Pre";
+            }
+            else if (zapisButton.Checked)
+            {
+                zaznaczonaOpcja = "za";
+            }
+            else if (odczytButton.Checked)
+            {
+                zaznaczonaOpcja = "od";
+            }
+            else if (zapisOdczytButton.Checked)
+            {
+                zaznaczonaOpcja = "za/od";
+            }
             try
             {
-                logika.zapiszConfig();
+                var data = new Config
+                {
+                    LiczbaWatkow = Convert.ToInt32(LiczbaWatkow.Value),
+                    RozmiarPlikow = Convert.ToInt32(RozmiarPlikow.Value),
+                    LiczbaPlikow = Convert.ToInt32(iloscPlikow.Value),
+                    Sciezka = sciezka,
+                    Weryfikacja = weryfikacja.Checked,
+                    Zaznaczenie = zaznaczonaOpcja
+
+                };
+                logika.zapiszConfig(data);
             }
             catch(Exception ex)
             {
@@ -91,9 +118,17 @@ namespace Check_Disk
         {
             try 
             { 
-                logika.wczytajConfig();
+                Config config = logika.WczytajConfig();
+                LiczbaWatkow.Value = config.LiczbaWatkow;
+                RozmiarPlikow.Value = config.RozmiarPlikow;
+                iloscPlikow.Value = config.LiczbaPlikow;
+                sciezka = config.Sciezka; wyswietlSciezke.Text = sciezka;
+                weryfikacja.Checked = config.Weryfikacja;
+                string zaz = config.Zaznaczenie;
+                if (zaz == "Pre") { preDifiniowanyTest.Checked = true; } else if (zaz == "za") { zapisButton.Checked = true; } else if (zaz == "od") { odczytButton.Checked = true; } else if (zaz == "za/od") { zapisOdczytButton.Checked = true; }
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

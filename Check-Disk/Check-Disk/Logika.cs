@@ -222,6 +222,8 @@ namespace Check_Disk
             f = form;
         }
 
+        
+
         public bool SprawdzMiejsceNaDysku(long size,string path)
         {
             long a = 0;
@@ -246,54 +248,22 @@ namespace Check_Disk
             return B / (1024 * 1024);
         }
 
-        public void wczytajConfig()
+        public Config WczytajConfig()
         {
             if (File.Exists(ConfigFileDirectory))
             {
                 StreamReader sr = new StreamReader(ConfigFileDirectory);
                 string line = sr.ReadLine();
                 Config config = JsonConvert.DeserializeObject<Config>(line);
-                f.LiczbaWatkow.Value = config.LiczbaWatkow;
-                f.RozmiarPlikow.Value = config.RozmiarPlikow;
-                f.iloscPlikow.Value = config.LiczbaPlikow;
-                f.sciezka = config.Sciezka;f.wyswietlSciezke.Text = f.sciezka;
-                f.weryfikacja.Checked = config.Weryfikacja;
-                string zaz = config.Zaznaczenie;
-                if (zaz == "Pre") { f.preDifiniowanyTest.Checked = true; } else if (zaz == "za") { f.zapisButton.Checked = true; } else if (zaz == "od") { f.odczytButton.Checked = true; } else if (zaz == "za/od") { f.zapisOdczytButton.Checked = true; }
                 sr.Close();
+                return config;
             }
+            return null;
         }
 
-        public void zapiszConfig()
+        public void zapiszConfig(Config config)
         {
-            string zaznaczonaOpcja = "";
-            if (f.preDifiniowanyTest.Checked)
-            {
-                zaznaczonaOpcja = "Pre";
-            }
-            else if (f.zapisButton.Checked)
-            {
-                zaznaczonaOpcja = "za";
-            }
-            else if (f.odczytButton.Checked)
-            {
-                zaznaczonaOpcja = "od";
-            }
-            else if (f.zapisOdczytButton.Checked)
-            {
-                zaznaczonaOpcja = "za/od";
-            }
-            var data = new Config
-            { 
-                LiczbaWatkow = Convert.ToInt32(f.LiczbaWatkow.Value),
-                RozmiarPlikow = Convert.ToInt32(f.RozmiarPlikow.Value),
-                LiczbaPlikow = Convert.ToInt32(f.iloscPlikow.Value),
-                Sciezka = f.sciezka,
-                Weryfikacja = f.weryfikacja.Checked,
-                Zaznaczenie = zaznaczonaOpcja
-                   
-            };
-            File.WriteAllText(ConfigFileDirectory, JsonConvert.SerializeObject(data));
+            File.WriteAllText(ConfigFileDirectory, JsonConvert.SerializeObject(config));
         }
 
         public double WriteTest(int whatSizeFile, string path)

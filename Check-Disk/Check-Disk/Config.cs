@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Check_Disk
 {
-    class Config
+    public class Config
     {
         public int LiczbaWatkow { get; set; }
         public int RozmiarPlikow { get; set; }
