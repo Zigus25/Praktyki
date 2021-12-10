@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Check_Disk
 {
@@ -253,21 +252,15 @@ namespace Check_Disk
             if (File.Exists(ConfigFileDirectory))
             {
                 StreamReader sr = new StreamReader(ConfigFileDirectory);
-                string line = "";
-                int i = 0;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    switch (i)
-                    {
-                        case 0: f.LiczbaWatkow.Value = int.Parse(line); break;
-                        case 1: f.RozmiarPlikow.Value = int.Parse(line); break;
-                        case 2: f.iloscPlikow.Value = int.Parse(line); break;
-                        case 3: f.sciezka = line; f.wyswietlSciezke.Text = line; break;
-                        case 4: if (line == "True") f.weryfikacja.Checked = true; break;
-                        case 5: if (line == "Pre") { f.preDifiniowanyTest.Checked = true; } else if (line == "za") { f.zapisButton.Checked = true; } else if (line == "od") { f.odczytButton.Checked = true; } else if (line == "za/od") { f.zapisOdczytButton.Checked = true; } break;
-                    }
-                    i++;
-                }
+                string line = sr.ReadLine();
+                Config config = JsonConvert.DeserializeObject<Config>(line);
+                f.LiczbaWatkow.Value = config.LiczbaWatkow;
+                f.RozmiarPlikow.Value = config.RozmiarPlikow;
+                f.iloscPlikow.Value = config.LiczbaPlikow;
+                f.sciezka = config.Sciezka;f.wyswietlSciezke.Text = f.sciezka;
+                f.weryfikacja.Checked = config.Weryfikacja;
+                string zaz = config.Zaznaczenie;
+                if (zaz == "Pre") { f.preDifiniowanyTest.Checked = true; } else if (zaz == "za") { f.zapisButton.Checked = true; } else if (zaz == "od") { f.odczytButton.Checked = true; } else if (zaz == "za/od") { f.zapisOdczytButton.Checked = true; }
                 sr.Close();
             }
         }
@@ -291,23 +284,18 @@ namespace Check_Disk
             {
                 zaznaczonaOpcja = "za/od";
             }
-            var data = new Config[]
-            {
-                new Config()
-                {
-                    LiczbaWatkow = Convert.ToInt32(f.LiczbaWatkow.Value),
-                    RozmiarPlikow = Convert.ToInt32(f.RozmiarPlikow.Value),
-                    LiczbaPlikow = Convert.ToInt32(f.iloscPlikow.Value),
-                    Sciezka = f.sciezka,
-                    Weryfikacja = f.weryfikacja.Checked,
-                    Zaznaczenie = zaznaczonaOpcja
+            var data = new Config
+            { 
+                LiczbaWatkow = Convert.ToInt32(f.LiczbaWatkow.Value),
+                RozmiarPlikow = Convert.ToInt32(f.RozmiarPlikow.Value),
+                LiczbaPlikow = Convert.ToInt32(f.iloscPlikow.Value),
+                Sciezka = f.sciezka,
+                Weryfikacja = f.weryfikacja.Checked,
+                Zaznaczenie = zaznaczonaOpcja
                    
-                }
             };
-            Zapis.ExportToTextFile(data,ConfigFileDirectory,';');
+            File.WriteAllText(ConfigFileDirectory, JsonConvert.SerializeObject(data));
         }
-
-        
 
         public double WriteTest(int whatSizeFile, string path)
         {
