@@ -258,7 +258,10 @@ namespace Check_Disk
                 sr.Close();
                 return config;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         public void zapiszConfig(Config config)

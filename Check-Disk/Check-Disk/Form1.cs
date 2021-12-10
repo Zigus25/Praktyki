@@ -16,7 +16,7 @@ namespace Check_Disk
             try
             {
                 logika.PrzekazForm(this);
-                logika.WczytajConfig();
+                konfig();
             }
             catch (Exception e)
             {
@@ -117,16 +117,8 @@ namespace Check_Disk
         private void WczytajConfig_Click(object sender, EventArgs e)
         {
             try 
-            { 
-                Config config = logika.WczytajConfig();
-                LiczbaWatkow.Value = config.LiczbaWatkow;
-                RozmiarPlikow.Value = config.RozmiarPlikow;
-                iloscPlikow.Value = config.LiczbaPlikow;
-                sciezka = config.Sciezka; wyswietlSciezke.Text = sciezka;
-                weryfikacja.Checked = config.Weryfikacja;
-                string zaz = config.Zaznaczenie;
-                if (zaz == "Pre") { preDifiniowanyTest.Checked = true; } else if (zaz == "za") { zapisButton.Checked = true; } else if (zaz == "od") { odczytButton.Checked = true; } else if (zaz == "za/od") { zapisOdczytButton.Checked = true; }
-
+            {
+                konfig();
             }
             catch (Exception ex)
             {
@@ -149,6 +141,18 @@ namespace Check_Disk
         public void PokazError(Exception e)
         {
             MessageBox.Show(e.Message);
+        }
+
+        public void konfig()
+        {
+            Config config = logika.WczytajConfig();
+            LiczbaWatkow.Value = config.LiczbaWatkow;
+            RozmiarPlikow.Value = config.RozmiarPlikow;
+            iloscPlikow.Value = config.LiczbaPlikow;
+            sciezka = config.Sciezka; wyswietlSciezke.Text = sciezka;
+            weryfikacja.Checked = config.Weryfikacja;
+            string zaz = config.Zaznaczenie;
+            if (zaz == "Pre") { preDifiniowanyTest.Checked = true; } else if (zaz == "za") { zapisButton.Checked = true; } else if (zaz == "od") { odczytButton.Checked = true; } else if (zaz == "za/od") { zapisOdczytButton.Checked = true; }
         }
     }
 }
