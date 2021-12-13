@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.DataGrid = new System.Windows.Forms.DataGridView();
+            this.Sava = new System.Windows.Forms.Button();
+            this.Load = new System.Windows.Forms.Button();
+            this.New = new System.Windows.Forms.Button();
+            this.Komurka = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,26 +49,85 @@
             this.DataGrid.MinimumSize = new System.Drawing.Size(800, 600);
             this.DataGrid.Name = "DataGrid";
             this.DataGrid.RowTemplate.Height = 25;
-            this.DataGrid.Size = new System.Drawing.Size(800, 600);
+            this.DataGrid.Size = new System.Drawing.Size(1086, 1002);
             this.DataGrid.TabIndex = 0;
+            this.DataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellClick);
+            // 
+            // Sava
+            // 
+            this.Sava.Location = new System.Drawing.Point(12, 7);
+            this.Sava.Name = "Sava";
+            this.Sava.Size = new System.Drawing.Size(75, 23);
+            this.Sava.TabIndex = 1;
+            this.Sava.Text = "Zapisz";
+            this.Sava.UseVisualStyleBackColor = true;
+            this.Sava.Click += new System.EventHandler(this.Sava_Click);
+            // 
+            // Load
+            // 
+            this.Load.Location = new System.Drawing.Point(93, 7);
+            this.Load.Name = "Load";
+            this.Load.Size = new System.Drawing.Size(75, 23);
+            this.Load.TabIndex = 2;
+            this.Load.Text = "Wczytaj";
+            this.Load.UseVisualStyleBackColor = true;
+            // 
+            // New
+            // 
+            this.New.Location = new System.Drawing.Point(174, 7);
+            this.New.Name = "New";
+            this.New.Size = new System.Drawing.Size(75, 23);
+            this.New.TabIndex = 3;
+            this.New.Text = "Nowy";
+            this.New.UseVisualStyleBackColor = true;
+            this.New.Click += new System.EventHandler(this.New_Click);
+            // 
+            // Komurka
+            // 
+            this.Komurka.AutoSize = true;
+            this.Komurka.Location = new System.Drawing.Point(1044, 11);
+            this.Komurka.Name = "Komurka";
+            this.Komurka.Size = new System.Drawing.Size(21, 15);
+            this.Komurka.TabIndex = 4;
+            this.Komurka.Text = "A1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(980, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 15);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Komurka:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(801, 636);
+            this.ClientSize = new System.Drawing.Size(1094, 1039);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Komurka);
+            this.Controls.Add(this.New);
+            this.Controls.Add(this.Load);
+            this.Controls.Add(this.Sava);
             this.Controls.Add(this.DataGrid);
-            this.MaximumSize = new System.Drawing.Size(817, 675);
-            this.MinimumSize = new System.Drawing.Size(817, 675);
+            this.MaximumSize = new System.Drawing.Size(1110, 1078);
+            this.MinimumSize = new System.Drawing.Size(1110, 1078);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ExCell";
             ((System.ComponentModel.ISupportInitialize)(this.DataGrid)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView DataGrid;
+        private System.Windows.Forms.Button Sava;
+        private System.Windows.Forms.Button Load;
+        private System.Windows.Forms.Button New;
+        private System.Windows.Forms.Label Komurka;
+        private System.Windows.Forms.Label label1;
     }
 }
