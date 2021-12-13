@@ -15,7 +15,6 @@ namespace Check_Disk
             LiczbaWatkow.Maximum = Environment.ProcessorCount;
             try
             {
-                logika.PrzekazForm(this);
                 konfig();
             }
             catch (Exception e)
@@ -26,13 +25,122 @@ namespace Check_Disk
 
         private void zacznijTest_Click(object sender, EventArgs ev)
         {
-            try
+            if (sciezka == "" && !preDifiniowanyTest.Checked)
             {
-                logika.rozpoznajTest();
+                PojemnikBledow.Text = "Nie wybrano żadnego pliku/ścieżki";
             }
-            catch(Exception e)
+            else
             {
-                MessageBox.Show(e.Message);
+                if (preDifiniowanyTest.Checked)
+                {
+                    try
+                    {
+                        var data = logika.PreDefiniowanyTest();
+                        if(data.bledy != null)
+                        {
+                            PokazError(data.bledy);
+                        }
+                        if(data.PojemnikBledow != null)
+                        {
+                            PojemnikBledow.Text = data.PojemnikBledow;
+                        }
+                        if (data.kopia != null)
+                        {
+                            Zgodnosc.Text = data.TextWeryfikacji;
+                            Zgodnosc.Visible = true;
+                            wynikiKopia = data.kopia;
+                            ZapisStat.Text = data.ZapisText;
+                            OdczytStaty.Text = data.OdczytText;
+                            ZapisStat.Visible = true;
+                            OdczytStaty.Visible = true;
+                            Kopiuj.Visible = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        PokazError(e);
+                    }
+                }
+                else if (odczytButton.Checked)
+                {
+                    try
+                    {
+                        var data = logika.TestOdczytu(Convert.ToInt32(LiczbaWatkow.Value),sciezka);
+                        wynikiKopia = data.kopia;
+                        OdczytStaty.Text = data.OdczytText;
+                        OdczytStaty.Visible = true;
+                        Kopiuj.Visible = true;
+                    }
+                    catch (Exception e)
+                    {
+                        PokazError(e);
+                    }
+                }
+                else if (logika.SprawdzMiejsceNaDysku(logika.CalcMBToB(Convert.ToInt32(RozmiarPlikow.Value) * Convert.ToInt32(iloscPlikow.Value)), sciezka))
+                {
+                    if (zapisButton.Checked)
+                    {
+                        try
+                        {
+                            var data = logika.TestZapisu(Convert.ToInt32(LiczbaWatkow.Value),Convert.ToInt32(iloscPlikow.Value),Convert.ToInt32(RozmiarPlikow.Value),sciezka,weryfikacja.Checked);
+                            if (data.bledy != null)
+                            {
+                                PokazError(data.bledy);
+                            }
+                            if (data.PojemnikBledow != null)
+                            {
+                                PojemnikBledow.Text = data.PojemnikBledow;
+                            }
+                            if (data.kopia != null)
+                            {
+                                Zgodnosc.Text = data.TextWeryfikacji;
+                                Zgodnosc.Visible = true;
+                                wynikiKopia = data.kopia;
+                                ZapisStat.Text = data.ZapisText;
+                                ZapisStat.Visible = true;
+                                Kopiuj.Visible = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            PokazError(e);
+                        }
+                    }
+                    else if (zapisOdczytButton.Checked)
+                    {
+                        try
+                        {
+                            var data = logika.TestZapisOdczyt(Convert.ToInt32(LiczbaWatkow.Value), Convert.ToInt32(iloscPlikow.Value), Convert.ToInt32(RozmiarPlikow.Value), sciezka, weryfikacja.Checked);
+                            if (data.bledy != null)
+                            {
+                                PokazError(data.bledy);
+                            }
+                            if (data.PojemnikBledow != null)
+                            {
+                                PojemnikBledow.Text = data.PojemnikBledow;
+                            }
+                            if (data.kopia != null)
+                            {
+                                Zgodnosc.Text = data.TextWeryfikacji;
+                                Zgodnosc.Visible = true;
+                                wynikiKopia = data.kopia;
+                                ZapisStat.Text = data.ZapisText;
+                                ZapisStat.Visible = true;
+                                OdczytStaty.Text = data.OdczytText;
+                                OdczytStaty.Visible = true;
+                                Kopiuj.Visible = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            PokazError(e);
+                        }
+                    }
+                }
+                else
+                {
+                    PojemnikBledow.Text = "Nie można wykonać żadnego testu";
+                }
             }
         }
 

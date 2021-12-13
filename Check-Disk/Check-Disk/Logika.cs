@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -8,221 +7,281 @@ namespace Check_Disk
 {
     public class Logika
     {
-        Form1 f;
         string DomyslnaSciezka = Directory.GetCurrentDirectory();
         Task taskJob;
         static string ConfigFileDirectory = Directory.GetCurrentDirectory() + @"\config.txt";
+        string czytaj = "";
 
-        public void rozpoznajTest()
+        public Kontrolki PreDefiniowanyTest()
         {
-            if (f.sciezka == "" && !f.preDifiniowanyTest.Checked)
+            double wynikZapis = 0.0;
+            double wynikOdczyt = 0.0;
+            bool mozna = false;
+            if (SprawdzMiejsceNaDysku(CalcMBToB(100 * (Environment.ProcessorCount * 3)), DomyslnaSciezka))
             {
-                f.PojemnikBledow.Text = "Nie wybrano żadnego pliku/ścieżki";
-            }
-            else
-            {
-                int nWL = Convert.ToInt32(f.LiczbaWatkow.Value);
-                int LPlikow = Convert.ToInt32(f.iloscPlikow.Value);
-                double wynikZapis = 0.0;
-                double wynikOdczyt = 0.0;
-                if (f.preDifiniowanyTest.Checked)
+                string popr;
+                try
                 {
-                    if (SprawdzMiejsceNaDysku(CalcMBToB(100*(Environment.ProcessorCount*3)), DomyslnaSciezka))
+                    DomyslnaSciezka = CreateFolder(DomyslnaSciezka);
+                    if (SprawdzPoprawnosc(DomyslnaSciezka))
+                    {
+                        popr = "Pliki są zapisywane poprawnie";
+                    }
+                    else
+                    {
+                        popr = "Pliki nie są zapisywane poprawnie";
+                    }
+                    mozna = true;
+                }
+                catch (Exception e)
+                {
+                    return new Kontrolki { bledy = e };
+                }
+                if (mozna)
+                {
+                    for (int j = 0; j < Environment.ProcessorCount; j++)
                     {
                         try
                         {
-                            DomyslnaSciezka = CreateFolder(DomyslnaSciezka);
-                            SprawdzPoprawnosc(DomyslnaSciezka);
-                        }
-                        catch (Exception e)
-                        {
-                            f.PokazError(e);
-                        }
-                        for (int j = 0; j < Environment.ProcessorCount; j++)
-                        {
-                            try
-                            {
-                                taskJob = Task.Factory.StartNew(() => {
+                            taskJob = Task.Factory.StartNew(() => {
                                 double wynikteraz = WriteTest(CalcMBToB(100), DomyslnaSciezka + @"\testowyplik" + j);
                                 wynikZapis += wynikteraz;
-                                });
-                                Thread.Sleep(200);
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
-                        }
-                        for (int j = 0; j < Environment.ProcessorCount; j++)
-                        {
-                            try
-                            {
-                                taskJob = Task.Factory.StartNew(() => {
-                                double wynikterazOdczyt = ReadTest(DomyslnaSciezka + @"\testowyplik10.txt");
-                                wynikOdczyt += wynikterazOdczyt;
-                                });
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
-                        }
-                        Task.WaitAll(taskJob);
-
-
-                        f.ZapisStat.Text = "Zapis: " + Math.Round(wynikZapis / Environment.ProcessorCount, 2) + @"MB\s";
-                        f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / Environment.ProcessorCount, 2) + @"MB\s";
-                        f.ZapisStat.Visible = true;
-                        f.Kopiuj.Visible = true;
-
-                        f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / Environment.ProcessorCount, 2) + @"MB\s";
-                        f.wynikiKopia += " Odczyt: " + Math.Round(wynikOdczyt / Environment.ProcessorCount, 2) + @"MB\s";
-                        f.OdczytStaty.Visible = true;
-                        try 
-                        { 
-                            DeleteTestFileFolder(DomyslnaSciezka);
+                            });
                         }
                         catch (Exception e)
                         {
-                            f.PokazError(e);
+                            return new Kontrolki { bledy = e };
                         }
+                    }
+                    for (int j = 0; j < Environment.ProcessorCount; j++)
+                    {
+                        try
+                        {
+                            taskJob = Task.Factory.StartNew(() => {
+                                double wynikterazOdczyt = ReadTest(czytaj);
+                                wynikOdczyt += wynikterazOdczyt;
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            return new Kontrolki { bledy = e };
+                        }
+                    }
+                    Task.WaitAll(taskJob);
+
+                    try
+                    {
+                        DeleteTestFileFolder(DomyslnaSciezka);
+                    }
+                    catch (Exception e)
+                    {
+                        return new Kontrolki { bledy = e };
+                    }
+
+
+                    return new Kontrolki
+                    {
+                        TextWeryfikacji = popr,
+                        ZapisText = $@"Zapis: {Math.Round(wynikZapis / Environment.ProcessorCount, 2)}MB\s",
+                        kopia = $@"Zapis: {Math.Round(wynikZapis / Environment.ProcessorCount, 2)}MB\s Odczyt: {Math.Round(wynikOdczyt / Environment.ProcessorCount, 2)}MB\s",
+                        OdczytText = $@"Odczyt: {Math.Round(wynikOdczyt / Environment.ProcessorCount, 2)}MB\s"
+                    };
                 }
+                else
+                {
+                    return new Kontrolki { PojemnikBledow = "Nie mozna bylo stworzyc sciezki do testu" };
                 }
-                else if (f.odczytButton.Checked)
+            }
+            else
+            {
+                return new Kontrolki{ PojemnikBledow = "Brak wystarczającego miejsca na dysku" };
+            }
+        }
+
+        public Kontrolki TestZapisOdczyt(int nWL, int LPlikow, int Rozmiar, string sciezka, bool wer)
+        {
+            double wynikZapis = 0.0;
+            double wynikOdczyt = 0.0;
+            bool mozna = false;
+            string popr = "";
+            string Sciezka = sciezka;
+            try
+            {
+                Sciezka = CreateFolder(Sciezka);
+                mozna = true;
+            }
+            catch (Exception e)
+            {
+                return new Kontrolki { bledy = e };
+            }
+            if (mozna)
+            {
+                if (wer)
+                {
+                    try
+                    {
+                        if (SprawdzPoprawnosc(Sciezka))
+                        {
+                            popr = "Pliki są zapisywane poprawnie";
+                        }
+                        else
+                        {
+                            popr = "Pliki nie są zapisywane poprawnie";
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return new Kontrolki { bledy = e };
+                    }
+                }
+                for (int j = 0; j < Environment.ProcessorCount; j++)
+                {
+                    try
+                    {
+                        taskJob = Task.Factory.StartNew(() => {
+                            double wynikteraz = WriteTest(CalcMBToB(100), Sciezka + @"\testowyplik" + j);
+                            wynikZapis += wynikteraz;
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        return new Kontrolki { bledy = e };
+                    }
+                }
+                Task.WaitAll(taskJob);
+                try
+                {
+                    taskJob = Task.Factory.StartNew(() => {
+                        double wynikterazOdczyt = ReadTest(czytaj);
+                        wynikOdczyt += wynikterazOdczyt;
+                    });
+                }
+                catch (Exception e)
+                {
+                    return new Kontrolki { bledy = e };
+                }
+                Task.WaitAll(taskJob);
+
+                try
+                {
+                    DeleteTestFileFolder(Sciezka);
+                }
+                catch (Exception e)
+                {
+                    return new Kontrolki { bledy = e };
+                }
+
+                return new Kontrolki
+                {
+                    kopia = $@"Zapis: {Math.Round(wynikZapis / nWL, 2)}MB\s Odczyt: {Math.Round(wynikOdczyt / nWL, 2)}MB\s",
+                    ZapisText = $@"Zapis: {Math.Round(wynikZapis / nWL, 2)}MB\s",
+                    OdczytText = $@"Odczyt: {Math.Round(wynikOdczyt / nWL, 2)}MB\s"
+                };
+            }
+            else
+            {
+                return new Kontrolki{ PojemnikBledow = "Nie można utworzyć folderu testowego" };
+            }
+        }
+
+        public Kontrolki TestZapisu(int nWL, int LPlikow, int Rozmiar , string sciezka , bool wer)
+        {
+            double wynikZapis = 0.0;
+            bool mozna = false;
+            string Sciezka = sciezka;
+            string popr = "";
+            try
+            {
+                Sciezka = CreateFolder(Sciezka);
+                mozna = true;
+            }
+            catch (Exception e)
+            {
+                return new Kontrolki { bledy = e };
+            }
+            if (mozna)
+            {
+                if (wer)
+                {
+                    try
+                    {
+                        if (SprawdzPoprawnosc(Sciezka))
+                        {
+                            popr = "Pliki są zapisywane poprawnie";
+                        }
+                        else
+                        {
+                            popr = "Pliki nie są zapisywane poprawnie";
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return new Kontrolki { bledy = e };
+                    }
+                }
+                for (int i = 0; i < LPlikow; i++)
                 {
                     for (int j = 0; j < nWL / LPlikow; j++)
                     {
                         try
                         {
                             taskJob = Task.Factory.StartNew(() => {
-                                double wynikterazOdczyt = ReadTest(f.sciezka);
-                                wynikOdczyt += wynikterazOdczyt;
-                            });
-                        }
-                        catch (Exception e)
-                        {
-                            f.PokazError(e);
-                        }
-                    }
-                    Task.WaitAll(taskJob);
-
-                    f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
-                    f.wynikiKopia = "Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
-                    f.OdczytStaty.Visible = true;
-                }
-                else if (SprawdzMiejsceNaDysku(CalcMBToB(Convert.ToInt32(f.RozmiarPlikow.Value) * LPlikow), f.sciezka))
-                {
-                    if (f.zapisButton.Checked)
-                    {
-                        f.sciezka = CreateFolder(f.sciezka);
-                        if (f.weryfikacja.Checked)
-                        {
-                            try 
-                            { 
-                                SprawdzPoprawnosc(f.sciezka);
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
-                        }
-                        for (int i = 0; i < LPlikow; i++)
-                        {
-                            for (int j = 0; j < nWL / LPlikow; j++)
-                            {
-                                try
-                                {
-                                    taskJob = Task.Factory.StartNew(() => {
-                                        double wynikteraz = WriteTest(CalcMBToB(Convert.ToInt32(f.RozmiarPlikow.Value)), f.sciezka + @"\testowyplik" + j);
-                                        wynikZapis += wynikteraz;
-                                    });
-                                    Thread.Sleep(200);
-                                }
-                                catch (Exception e)
-                                {
-                                    f.PokazError(e);
-                                }
-                            }
-                        }
-                        Task.WaitAll(taskJob);
-                        f.ZapisStat.Text = "Zapis: " + Math.Round(wynikZapis / (nWL / LPlikow), 2) + @"MB\s";
-                        f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / (nWL / LPlikow), 2) + @"MB\s";
-                        f.ZapisStat.Visible = true;
-                        f.Kopiuj.Visible = true;
-                        try
-                        {
-                            DeleteTestFileFolder(f.sciezka);
-                        }
-                        catch (Exception e)
-                        {
-                            f.PokazError(e);
-                        }
-                    }
-                    else if (f.zapisOdczytButton.Checked)
-                    {
-                        f.sciezka = CreateFolder(f.sciezka);
-                        if (f.weryfikacja.Checked)
-                        {
-                            try
-                            {
-                                SprawdzPoprawnosc(f.sciezka);
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
-                        }
-                        for (int j = 0; j < Environment.ProcessorCount; j++)
-                        {
-                            try
-                            {
-                                taskJob = Task.Factory.StartNew(() => {
-                                double wynikteraz = WriteTest(CalcMBToB(100), f.sciezka + @"\testowyplik" + j);
+                                double wynikteraz = WriteTest(CalcMBToB(Convert.ToInt32(Rozmiar)), Sciezka + @"\testowyplik" + j);
                                 wynikZapis += wynikteraz;
-                                });
-                                Thread.Sleep(200);
-                            }
-                            catch (Exception e)
-                            {
-                                f.PokazError(e);
-                            }
-                        }
-                        Task.WaitAll(taskJob);
-                        try
-                        {
-                            taskJob = Task.Factory.StartNew(() => {
-                                double wynikterazOdczyt = ReadTest(f.sciezka + @"\testowyplik10.txt");
-                                wynikOdczyt += wynikterazOdczyt;
                             });
                         }
                         catch (Exception e)
                         {
-                            f.PokazError(e);
+                            return new Kontrolki { bledy = e };
                         }
-                        Task.WaitAll(taskJob);
-
-                        f.ZapisStat.Text = "Zapis: " + Math.Round(wynikZapis / nWL, 2) + @"MB\s";
-                        f.wynikiKopia = "Zapis: " + Math.Round(wynikZapis / nWL, 2) + @"MB\s";
-                        f.ZapisStat.Visible = true;
-                        f.Kopiuj.Visible = true;
-
-                        f.OdczytStaty.Text = "Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
-                        f.wynikiKopia += " Odczyt: " + Math.Round(wynikOdczyt / nWL, 2) + @"MB\s";
-                        f.OdczytStaty.Visible = true;
-
-                        Task.WaitAll(taskJob);
-                        DeleteTestFileFolder(f.sciezka);
                     }
                 }
+                Task.WaitAll(taskJob);
+                try
+                {
+                    DeleteTestFileFolder(Sciezka);
+                }
+                catch (Exception e)
+                {
+                    return new Kontrolki { bledy = e };
+                }
+                return new Kontrolki
+                {
+                    TextWeryfikacji = popr,
+                    kopia = $@"Zapis: {Math.Round(wynikZapis / (nWL / LPlikow), 2)}MB\s",
+                    ZapisText = $@"Zapis: {Math.Round(wynikZapis / (nWL / LPlikow), 2)}MB\s"
+                };
+            }
+            else
+            {
+                return new Kontrolki { PojemnikBledow = "Nie można utworzyć folderu testowego" };
             }
         }
 
-        public void PrzekazForm(Form1 form)
+        public Kontrolki TestOdczytu(int nWL, string sciezka)
         {
-            f = form;
+            double wynikOdczyt = 0.0;
+            for (int j = 0; j < nWL; j++)
+            {
+                try
+                {
+                    taskJob = Task.Factory.StartNew(() => {
+                        double wynikterazOdczyt = ReadTest(sciezka);
+                        wynikOdczyt += wynikterazOdczyt;
+                    });
+                }
+                catch (Exception e)
+                {
+                    return new Kontrolki { bledy = e };
+                }
+            }
+            Task.WaitAll(taskJob);
+            return new Kontrolki
+            {
+                OdczytText = $@"Odczyt: {Math.Round(wynikOdczyt / nWL, 2)}MB\s",
+                kopia = $@"Odczyt: {Math.Round(wynikOdczyt / nWL, 2)}MB\s"
+            };
         }
-
-        
 
         public bool SprawdzMiejsceNaDysku(long size,string path)
         {
@@ -274,12 +333,18 @@ namespace Check_Disk
             Random random = new Random();
             int bytes = whatSizeFile;
             double wyniki = 0.0;
+           
             for (int i = 0; i < 3; i++)
             {
                 var bity = new byte[bytes];
                 random.NextBytes(bity);
+                string curPath = $@"{path}{Guid.NewGuid()}.txt";
+                if(czytaj == "")
+                {
+                    czytaj = curPath;
+                }
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                File.WriteAllBytes($@"{path}{i}.txt", bity);
+                File.WriteAllBytes(curPath, bity);
                 watch.Stop();
                 double elapsedMs = watch.ElapsedMilliseconds;
                 double wynik = (CalcBToMB(bytes) / Math.Round(elapsedMs / 1000,3));
@@ -331,30 +396,21 @@ namespace Check_Disk
             Directory.Delete(path, true);
         }
 
-        public void SprawdzPoprawnosc(string path)
+        public bool SprawdzPoprawnosc(string path)
         {
             Random random = new Random();
-            try
-            {
-                var bity = new byte[CalcMBToB(500)];
-                random.NextBytes(bity);
-                File.WriteAllBytes($@"{path}\PlikZgodnosci.txt", bity);
+            var bity = new byte[CalcMBToB(500)];
+            random.NextBytes(bity);
+            File.WriteAllBytes($@"{path}\PlikZgodnosci.txt", bity);
 
-                if (File.ReadAllBytes($@"{path}\PlikZgodnosci.txt").ToString().Contains(bity.ToString()))
-                {
-                    f.Zgodnosc.Text = "Pliki są zapisywane poprawnie";
-                    f.Zgodnosc.Visible = true;
-                }
-                else
-                {
-                    f.Zgodnosc.Text = "Pliki nie są zapisywane poprawnie";
-                    f.Zgodnosc.Visible = true;
-                }
-            }
-            catch (Exception e)
+            if (File.ReadAllBytes($@"{path}\PlikZgodnosci.txt").ToString().Contains(bity.ToString()))
             {
-                f.PokazError(e);
+                return true;
             }
-}
+            else
+            {
+                return false;
+            }
+        }
     }
 }
