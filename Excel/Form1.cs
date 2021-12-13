@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Excel
@@ -24,7 +23,7 @@ namespace Excel
             }
         }
 
-        private void New_Click(object sender, System.EventArgs e)
+        private void New_Click(object sender, EventArgs e)
         {
             DataGrid.Rows.Clear(); 
             for (int i = 0; i < 50; i++)
@@ -34,14 +33,33 @@ namespace Excel
             DataGrid.Refresh();
         }
 
-        private void Sava_Click(object sender, System.EventArgs e)
+        private void Sava_Click(object sender, EventArgs e)
         {
 
         }
 
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            Komurka.Text = (DataGrid.CurrentCell.OwningColumn.Name + (DataGrid.CurrentCell.RowIndex+1));
+            int x = (DataGrid.CurrentCell.RowIndex + 1);
+            string Kol = DataGrid.CurrentCell.OwningColumn.Name;
+            Komurka.Text = (Kol + x);
+            if (DataGrid.CurrentCell.Value!=null)
+            {
+                string a = DataGrid.CurrentCell.Value.ToString();
+                label2.Text = a;
+                if (a.StartsWith("="))
+                {
+                    if (a.Contains("+"))
+                    {
+                        var sp = a.Split("+");
+                        label2.Text = sp[0];
+                    }
+                }
+            }
+            else
+            {
+                label2.Text = "";
+            }
         }
     }
 }
