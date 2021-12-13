@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalkulatorImprezy", "Kalkul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZmianaNazwyOkna", "ZmianaNazwyOkna\ZmianaNazwyOkna\ZmianaNazwyOkna.csproj", "{8FD7B4BC-7884-4C93-94F7-DD30813A9989}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel", "Excel\Excel.csproj", "{B4472747-3140-43FF-9A68-F3A8521E84B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8FD7B4BC-7884-4C93-94F7-DD30813A9989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FD7B4BC-7884-4C93-94F7-DD30813A9989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FD7B4BC-7884-4C93-94F7-DD30813A9989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4472747-3140-43FF-9A68-F3A8521E84B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4472747-3140-43FF-9A68-F3A8521E84B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4472747-3140-43FF-9A68-F3A8521E84B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4472747-3140-43FF-9A68-F3A8521E84B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
