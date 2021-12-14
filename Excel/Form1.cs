@@ -46,6 +46,22 @@ namespace Excel
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     dbl.CreateConnection(openFileDialog.FileName);
+                    foreach (DataGridViewRow row in DataGrid.Rows)
+                    {
+                        string rowData = "";
+                        for (int i = 0; i < 26; i++)
+                        {
+                            if (row.Cells[1].Value != null)
+                            {
+                                rowData += row.Cells[1].Value.ToString() + ";";
+                            }
+                            else
+                            {
+                                rowData += ";";
+                            }
+                        }
+                        dbl.AddData(rowData);
+                    }
 
                 }
             }
@@ -53,13 +69,7 @@ namespace Excel
 
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            foreach (DataGridViewRow row in DataGrid.Rows)
-            {
-                if(row.Cells[1].Value != null)
-                {
-                    Console.WriteLine(row.Cells[1].Value.ToString());
-                }
-            }
+            
             int x = (DataGrid.CurrentCell.RowIndex + 1);
             string Kol = DataGrid.CurrentCell.OwningColumn.Name;
             Komurka.Text = (Kol + x);
