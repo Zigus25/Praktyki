@@ -5,6 +5,8 @@ namespace Excel
 {
     public partial class Form1 : Form
     {
+
+        DBLogic dbl = new DBLogic();
         public Form1()
         {
             InitializeComponent();
@@ -35,11 +37,29 @@ namespace Excel
 
         private void Sava_Click(object sender, EventArgs e)
         {
+            using (SaveFileDialog openFileDialog = new SaveFileDialog())
+            {
+                openFileDialog.Filter = "db files (*.db)|*.db";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
 
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    dbl.CreateConnection(openFileDialog.FileName);
+
+                }
+            }
         }
 
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            foreach (DataGridViewRow row in DataGrid.Rows)
+            {
+                if(row.Cells[1].Value != null)
+                {
+                    Console.WriteLine(row.Cells[1].Value.ToString());
+                }
+            }
             int x = (DataGrid.CurrentCell.RowIndex + 1);
             string Kol = DataGrid.CurrentCell.OwningColumn.Name;
             Komurka.Text = (Kol + x);
