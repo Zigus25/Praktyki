@@ -81,5 +81,21 @@ namespace Excel
                 label2.Text = "";
             }
         }
+
+        private void Load_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "db files (*.db)|*.db";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    dbl.CreateConnection(openFileDialog.FileName);
+
+                }
+            }
+        }
     }
 }

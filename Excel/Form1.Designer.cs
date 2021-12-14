@@ -72,6 +72,7 @@
             this.Load.TabIndex = 2;
             this.Load.Text = "Wczytaj";
             this.Load.UseVisualStyleBackColor = true;
+            this.Load.Click += new System.EventHandler(this.Load_Click);
             // 
             // New
             // 
