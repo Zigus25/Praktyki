@@ -17,8 +17,20 @@ namespace Excel
             {
                 conn.Open();
                 sqlite_conn = conn;
-                Table();
-                configDB();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"SELECT COUNT(*) FROM sqlite_master WHERE name=@TableName";
+                var p1 = cmd.CreateParameter();
+                p1.DbType = DbType.String;
+                p1.ParameterName = "TableName";
+                p1.Value = "Tabela";
+                cmd.Parameters.Add(p1);
+
+                var result = cmd.ExecuteScalar();
+                if ((long)result == 0)
+                {
+                    Table();
+                    configDB();
+                }
             }
             catch (Exception ex)
             {
@@ -34,6 +46,12 @@ namespace Excel
             sqlite_cmd = sqlite_conn.CreateCommand();
             sqlite_cmd.CommandText = Createsql;
             sqlite_cmd.ExecuteNonQuery();
+        }
+
+        public SqliteDataReader LoadTable()
+        {
+            SqliteCommand command = new SqliteCommand("SELECT * FROM Tabela", sqlite_conn);
+            return command.ExecuteReader();
         }
 
         public void configDB()

@@ -5,7 +5,7 @@ namespace Excel
 {
     public partial class Form1 : Form
     {
-
+        bool baza = false;
         DBLogic dbl = new DBLogic();
         public Form1()
         {
@@ -33,35 +33,38 @@ namespace Excel
 
         private void Sava_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog openFileDialog = new SaveFileDialog())
+            if(!baza)
             {
-                openFileDialog.Filter = "db files (*.db)|*.db";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.RestoreDirectory = true;
-                int rowID = 1;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                using (SaveFileDialog openFileDialog = new SaveFileDialog())
                 {
-                    dbl.CreateConnection(openFileDialog.FileName);
-                    foreach (DataGridViewRow row in DataGrid.Rows)
-                    {
-                        string rowData = "";
-                        for (int i = 0; i < 26; i++)
-                        {
-                            if (row.Cells[i].Value != null)
-                            {
-                                rowData += row.Cells[i].Value.ToString() + ";";
-                            }
-                            else
-                            {
-                                rowData += ";";
-                            }
-                        }
-                        dbl.AddData(rowData, rowID);
-                        rowID++;
-                    }
+                    openFileDialog.Filter = "db files (*.db)|*.db";
+                    openFileDialog.FilterIndex = 1;
+                    openFileDialog.RestoreDirectory = true;
 
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        dbl.CreateConnection(openFileDialog.FileName);
+                        baza = true;
+                    }
                 }
+            }
+            int rowID = 1;
+            foreach (DataGridViewRow row in DataGrid.Rows)
+            {
+                string rowData = "";
+                for (int i = 0; i < 26; i++)
+                {
+                    if (row.Cells[i].Value != null)
+                    {
+                        rowData += row.Cells[i].Value.ToString() + ";";
+                    }
+                    else
+                    {
+                        rowData += ";";
+                    }
+                }
+                dbl.AddData(rowData, rowID);
+                rowID++;
             }
         }
 
@@ -187,7 +190,19 @@ namespace Excel
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     dbl.CreateConnection(openFileDialog.FileName);
-
+                    DataGrid.Rows.Clear();
+                    var a = dbl.LoadTable();
+                    while (a.Read())
+                    {
+                        string[] row = new string[26];
+                        for (int i = 0; i < 26; i++)
+                        {
+                            row[i] = a.GetString(i);
+                        }
+                        DataGrid.Rows.Add(row);
+                    }
+                    DataGrid.Refresh();
+                    baza = true;
                 }
             }
         }
