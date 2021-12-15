@@ -19,10 +19,6 @@ namespace Excel
             {
                 DataGrid.Columns.Add(((char)(65+i)).ToString(), ((char)(65+i)).ToString());
             }
-            for(int i = 0; i < 50; i++)
-            {
-                DataGrid.Rows.Add();
-            }
         }
 
         private void New_Click(object sender, EventArgs e)
@@ -42,6 +38,7 @@ namespace Excel
                 openFileDialog.Filter = "db files (*.db)|*.db";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
+                int rowID = 1;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -51,16 +48,17 @@ namespace Excel
                         string rowData = "";
                         for (int i = 0; i < 26; i++)
                         {
-                            if (row.Cells[1].Value != null)
+                            if (row.Cells[i].Value != null)
                             {
-                                rowData += row.Cells[1].Value.ToString() + ";";
+                                rowData += row.Cells[i].Value.ToString() + ";";
                             }
                             else
                             {
                                 rowData += ";";
                             }
                         }
-                        dbl.AddData(rowData);
+                        dbl.AddData(rowData, rowID);
+                        rowID++;
                     }
 
                 }
@@ -81,8 +79,13 @@ namespace Excel
                 {
                     if (a.Contains("+"))
                     {
-                        var sp = a.Split("+");
-                        label2.Text = sp[0];
+                        var sp = a.Remove(0,1).Split("+");
+                        int wynik = 0;
+                        for(int i = 0; i< sp.Length; i++)
+                        {
+                            wynik += Convert.ToInt32(sp[i]);
+                        }
+                        label2.Text = (wynik).ToString();
                     }
                 }
             }

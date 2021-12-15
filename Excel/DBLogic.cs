@@ -18,6 +18,7 @@ namespace Excel
                 conn.Open();
                 sqlite_conn = conn;
                 Table();
+                configDB();
             }
             catch (Exception ex)
             {
@@ -35,36 +36,36 @@ namespace Excel
             sqlite_cmd.ExecuteNonQuery();
         }
 
-        public void AddData(string row)
+        public void configDB()
         {
-            SqliteCommand command = new SqliteCommand(null,sqlite_conn);
+            SqliteCommand command = new SqliteCommand(null, sqlite_conn);
             command.CommandText = "INSERT INTO Tabela (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z) VALUES (@A,@B,@C,@D,@E,@F,@G,@H,@I,@J,@K,@L,@M,@N,@O,@P,@Q,@R,@S,@T,@U,@V,@W,@X,@Y,@Z)";
-            SqlParameter A = new SqlParameter("@A", SqlDbType.Text, 256);
-            SqlParameter B = new SqlParameter("@B", SqlDbType.Text, 256);
-            SqlParameter C = new SqlParameter("@C", SqlDbType.Text, 256);
-            SqlParameter D = new SqlParameter("@D", SqlDbType.Text, 256);
-            SqlParameter E = new SqlParameter("@E", SqlDbType.Text, 256);
-            SqlParameter F = new SqlParameter("@F", SqlDbType.Text, 256);
-            SqlParameter G = new SqlParameter("@G", SqlDbType.Text, 256);
-            SqlParameter H = new SqlParameter("@H", SqlDbType.Text, 256);
-            SqlParameter I = new SqlParameter("@I", SqlDbType.Text, 256);
-            SqlParameter J = new SqlParameter("@J", SqlDbType.Text, 256);
-            SqlParameter K = new SqlParameter("@K", SqlDbType.Text, 256);
-            SqlParameter L = new SqlParameter("@L", SqlDbType.Text, 256);
-            SqlParameter M = new SqlParameter("@M", SqlDbType.Text, 256);
-            SqlParameter N = new SqlParameter("@N", SqlDbType.Text, 256);
-            SqlParameter O = new SqlParameter("@O", SqlDbType.Text, 256);
-            SqlParameter P = new SqlParameter("@P", SqlDbType.Text, 256);
-            SqlParameter Q = new SqlParameter("@Q", SqlDbType.Text, 256);
-            SqlParameter R = new SqlParameter("@R", SqlDbType.Text, 256);
-            SqlParameter S = new SqlParameter("@S", SqlDbType.Text, 256);
-            SqlParameter T = new SqlParameter("@T", SqlDbType.Text, 256);
-            SqlParameter U = new SqlParameter("@U", SqlDbType.Text, 256);
-            SqlParameter V = new SqlParameter("@V", SqlDbType.Text, 256);
-            SqlParameter W = new SqlParameter("@W", SqlDbType.Text, 256);
-            SqlParameter X = new SqlParameter("@X", SqlDbType.Text, 256);
-            SqlParameter Y = new SqlParameter("@Y", SqlDbType.Text, 256);
-            SqlParameter Z = new SqlParameter("@Z", SqlDbType.Text, 256);
+            SqliteParameter A = new SqliteParameter("@A", SqliteType.Text, 256);
+            SqliteParameter B = new SqliteParameter("@B", SqliteType.Text, 256);
+            SqliteParameter C = new SqliteParameter("@C", SqliteType.Text, 256);
+            SqliteParameter D = new SqliteParameter("@D", SqliteType.Text, 256);
+            SqliteParameter E = new SqliteParameter("@E", SqliteType.Text, 256);
+            SqliteParameter F = new SqliteParameter("@F", SqliteType.Text, 256);
+            SqliteParameter G = new SqliteParameter("@G", SqliteType.Text, 256);
+            SqliteParameter H = new SqliteParameter("@H", SqliteType.Text, 256);
+            SqliteParameter I = new SqliteParameter("@I", SqliteType.Text, 256);
+            SqliteParameter J = new SqliteParameter("@J", SqliteType.Text, 256);
+            SqliteParameter K = new SqliteParameter("@K", SqliteType.Text, 256);
+            SqliteParameter L = new SqliteParameter("@L", SqliteType.Text, 256);
+            SqliteParameter M = new SqliteParameter("@M", SqliteType.Text, 256);
+            SqliteParameter N = new SqliteParameter("@N", SqliteType.Text, 256);
+            SqliteParameter O = new SqliteParameter("@O", SqliteType.Text, 256);
+            SqliteParameter P = new SqliteParameter("@P", SqliteType.Text, 256);
+            SqliteParameter Q = new SqliteParameter("@Q", SqliteType.Text, 256);
+            SqliteParameter R = new SqliteParameter("@R", SqliteType.Text, 256);
+            SqliteParameter S = new SqliteParameter("@S", SqliteType.Text, 256);
+            SqliteParameter T = new SqliteParameter("@T", SqliteType.Text, 256);
+            SqliteParameter U = new SqliteParameter("@U", SqliteType.Text, 256);
+            SqliteParameter V = new SqliteParameter("@V", SqliteType.Text, 256);
+            SqliteParameter W = new SqliteParameter("@W", SqliteType.Text, 256);
+            SqliteParameter X = new SqliteParameter("@X", SqliteType.Text, 256);
+            SqliteParameter Y = new SqliteParameter("@Y", SqliteType.Text, 256);
+            SqliteParameter Z = new SqliteParameter("@Z", SqliteType.Text, 256);
             command.Parameters.Add(A);
             command.Parameters.Add(B);
             command.Parameters.Add(C);
@@ -93,11 +94,83 @@ namespace Excel
             command.Parameters.Add(Z);
             command.Prepare();
 
+            for(int j = 0; j < 50; j++)
+            {
+                for (int i = 0; i < 26; i++)
+                {
+                    command.Parameters[i].Value = "";
+                }
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void AddData(string row, int RowID)
+        {
+            SqliteCommand command = new SqliteCommand(null,sqlite_conn);
+            command.CommandText = "UPDATE Tabela SET (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z) = (@A,@B,@C,@D,@E,@F,@G,@H,@I,@J,@K,@L,@M,@N,@O,@P,@Q,@R,@S,@T,@U,@V,@W,@X,@Y,@Z) WHERE ROWID = @RID";
+            SqliteParameter A = new SqliteParameter("@A", SqliteType.Text, 256);
+            SqliteParameter B = new SqliteParameter("@B", SqliteType.Text, 256);
+            SqliteParameter C = new SqliteParameter("@C", SqliteType.Text, 256);
+            SqliteParameter D = new SqliteParameter("@D", SqliteType.Text, 256);
+            SqliteParameter E = new SqliteParameter("@E", SqliteType.Text, 256);
+            SqliteParameter F = new SqliteParameter("@F", SqliteType.Text, 256);
+            SqliteParameter G = new SqliteParameter("@G", SqliteType.Text, 256);
+            SqliteParameter H = new SqliteParameter("@H", SqliteType.Text, 256);
+            SqliteParameter I = new SqliteParameter("@I", SqliteType.Text, 256);
+            SqliteParameter J = new SqliteParameter("@J", SqliteType.Text, 256);
+            SqliteParameter K = new SqliteParameter("@K", SqliteType.Text, 256);
+            SqliteParameter L = new SqliteParameter("@L", SqliteType.Text, 256);
+            SqliteParameter M = new SqliteParameter("@M", SqliteType.Text, 256);
+            SqliteParameter N = new SqliteParameter("@N", SqliteType.Text, 256);
+            SqliteParameter O = new SqliteParameter("@O", SqliteType.Text, 256);
+            SqliteParameter P = new SqliteParameter("@P", SqliteType.Text, 256);
+            SqliteParameter Q = new SqliteParameter("@Q", SqliteType.Text, 256);
+            SqliteParameter R = new SqliteParameter("@R", SqliteType.Text, 256);
+            SqliteParameter S = new SqliteParameter("@S", SqliteType.Text, 256);
+            SqliteParameter T = new SqliteParameter("@T", SqliteType.Text, 256);
+            SqliteParameter U = new SqliteParameter("@U", SqliteType.Text, 256);
+            SqliteParameter V = new SqliteParameter("@V", SqliteType.Text, 256);
+            SqliteParameter W = new SqliteParameter("@W", SqliteType.Text, 256);
+            SqliteParameter X = new SqliteParameter("@X", SqliteType.Text, 256);
+            SqliteParameter Y = new SqliteParameter("@Y", SqliteType.Text, 256);
+            SqliteParameter Z = new SqliteParameter("@Z", SqliteType.Text, 256);
+            SqliteParameter RID = new SqliteParameter("@RID", SqliteType.Integer, 2);
+            command.Parameters.Add(A);
+            command.Parameters.Add(B);
+            command.Parameters.Add(C);
+            command.Parameters.Add(D);
+            command.Parameters.Add(E);
+            command.Parameters.Add(F);
+            command.Parameters.Add(G);
+            command.Parameters.Add(H);
+            command.Parameters.Add(I);
+            command.Parameters.Add(J);
+            command.Parameters.Add(K);
+            command.Parameters.Add(L);
+            command.Parameters.Add(M);
+            command.Parameters.Add(N);
+            command.Parameters.Add(O);
+            command.Parameters.Add(P);
+            command.Parameters.Add(Q);
+            command.Parameters.Add(R);
+            command.Parameters.Add(S);
+            command.Parameters.Add(T);
+            command.Parameters.Add(U);
+            command.Parameters.Add(V);
+            command.Parameters.Add(W);
+            command.Parameters.Add(X);
+            command.Parameters.Add(Y);
+            command.Parameters.Add(Z);
+            command.Parameters.Add(RID);
+            command.Prepare();
+
             var Data = row.Split(";");
-            for(int i = 0; i < Data.Length; i++)
+            Console.WriteLine(Data.Length);
+            for(int i = 0; i < Data.Length-1; i++)
             {
                 command.Parameters[i].Value = Data[i];
             }
+            command.Parameters[26].Value = RowID;
             command.ExecuteNonQuery();
         }
     }

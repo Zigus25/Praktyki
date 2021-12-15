@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalkulatorImprezy", "Kalkul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZmianaNazwyOkna", "ZmianaNazwyOkna\ZmianaNazwyOkna\ZmianaNazwyOkna.csproj", "{8FD7B4BC-7884-4C93-94F7-DD30813A9989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel", "Excel\Excel.csproj", "{B4472747-3140-43FF-9A68-F3A8521E84B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Excel", "Excel\Excel.csproj", "{B4472747-3140-43FF-9A68-F3A8521E84B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D183D873-2F66-4135-B3E1-20E40BBF50AD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
