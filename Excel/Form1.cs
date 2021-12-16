@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Excel
@@ -87,7 +88,26 @@ namespace Excel
                         int wynik = 1;
                         for (int i = 0; i < sp.Length; i++)
                         {
-                            wynik *= Convert.ToInt32(sp[i]);
+                            if (sp[i].All(char.IsDigit))
+                            {
+                                wynik *= Convert.ToInt32(sp[i]);
+                            }
+                            else if (sp[i].Length == 2)
+                            {
+                                if(sp.Length == 1)
+                                {
+                                    Console.WriteLine("Kol");
+                                }
+                                else
+                                {
+                                    Console.WriteLine((sp[i])[0]+ " "+ (sp[i])[1]);
+                                    Console.WriteLine(DataGrid.Rows[(sp[i])[0]].Cells[(sp[i])[1]]);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Błąd");
+                            }
                         }
                         label2.Text = (wynik).ToString();
                         tak = false;
