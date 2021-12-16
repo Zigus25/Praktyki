@@ -79,9 +79,31 @@ namespace Excel
             if (DataGrid.CurrentCell.Value!=null)
             {
                 string a = DataGrid.CurrentCell.Value.ToString();
-                label2.Text = a;
                 if (a.StartsWith("="))
                 {
+                    if (a.StartsWith("=Suma(")&& a.Contains(":") && a.EndsWith(")"))
+                    {
+                        string sum = a.Substring(6, a.Length-7);
+                        var sp = sum.Split(":");
+
+                        int col1 = sp[0][0] - 65;
+                        int row1 = sp[0][1] - 49;
+                        int col2 = sp[1][0] - 65;
+                        int row2 = sp[1][1] - 49;
+
+                        if (col1==col2)
+                        {
+
+                        }
+                        else if (col1<col2)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
                     if (a.Contains("*") && tak)
                     {
                         var sp = a.Remove(0, 1).Split("*");
@@ -96,7 +118,7 @@ namespace Excel
                             {
                                 Console.WriteLine("kol");
                             }
-                            else if (sp[i].Length == 2)
+                            else if (sp[i].Length > 1 && sp[i].Length < 4)
                             {
                                 int col = ((int)sp[i][0] - 65);
                                 int row = (sp[i][1])-49;
@@ -138,7 +160,7 @@ namespace Excel
                             {
                                 Console.WriteLine("kol");
                             }
-                            else if (sp[i].Length == 2)
+                            else if (sp[i].Length > 1 && sp[i].Length < 4)
                             {
                                 int col = ((int)sp[i][0] - 65);
                                 int row = (sp[i][1]) - 49;
@@ -192,7 +214,7 @@ namespace Excel
                             {
                                 Console.WriteLine("kol");
                             }
-                            else if (sp[i].Length == 2)
+                            else if (sp[i].Length > 1 && sp[i].Length < 4)
                             {
                                 int col = ((int)sp[i][0] - 65);
                                 int row = (sp[i][1]) - 49;
@@ -240,12 +262,13 @@ namespace Excel
                             {
                                 Console.WriteLine("kol");
                             }
-                            else if (sp[i].Length == 2)
+                            else if (sp[i].Length > 1 && sp[i].Length < 4)
                             {
                                 int col = ((int)sp[i][0] - 65);
-                                int row = (sp[i][1]) - 49;
+                                int row = (sp[i][1])-49;
                                 if (DataGrid.Rows[row].Cells[col].Value != null)
                                 {
+                                    Console.WriteLine(col+ " " + row);
                                     wynik += Convert.ToInt32(DataGrid.Rows[row].Cells[col].Value);
                                 }
                                 else
@@ -261,6 +284,10 @@ namespace Excel
                         label2.Text = (wynik).ToString();
                         tak = false;
                     }
+                }
+                else
+                {
+                    label2.Text = a;
                 }
             }
             else
