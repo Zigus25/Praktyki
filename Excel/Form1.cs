@@ -92,16 +92,21 @@ namespace Excel
                             {
                                 wynik *= Convert.ToInt32(sp[i]);
                             }
+                            else if (sp[i].All(char.IsLetter))
+                            {
+                                Console.WriteLine("kol");
+                            }
                             else if (sp[i].Length == 2)
                             {
-                                if(sp.Length == 1)
+                                int col = ((int)sp[i][0] - 65);
+                                int row = (sp[i][1])-49;
+                                if (DataGrid.Rows[row].Cells[col].Value!=null)
                                 {
-                                    Console.WriteLine("Kol");
+                                    wynik *= Convert.ToInt32(DataGrid.Rows[row].Cells[col].Value);
                                 }
                                 else
                                 {
-                                    Console.WriteLine((sp[i])[0]+ " "+ (sp[i])[1]);
-                                    Console.WriteLine(DataGrid.Rows[(sp[i])[0]].Cells[(sp[i])[1]]);
+                                    wynik *= 1;
                                 }
                             }
                             else
@@ -115,16 +120,47 @@ namespace Excel
                     if (a.Contains("/") && tak)
                     {
                         var sp = a.Remove(0, 1).Split("/");
-                        int wynik = 0;
+                        double wynik = 0.0;
                         for (int i = 0; i < sp.Length; i++)
                         {
-                            if (i==0)
+                            if (sp[i].All(char.IsDigit))
                             {
-                                wynik = Convert.ToInt32(sp[i]);
+                                if (i == 0)
+                                {
+                                    wynik = Convert.ToInt32(sp[i]);
+                                }
+                                else
+                                {
+                                    wynik /= Convert.ToInt32(sp[i]);
+                                }
+                            }
+                            else if (sp[i].All(char.IsLetter))
+                            {
+                                Console.WriteLine("kol");
+                            }
+                            else if (sp[i].Length == 2)
+                            {
+                                int col = ((int)sp[i][0] - 65);
+                                int row = (sp[i][1]) - 49;
+                                if (DataGrid.Rows[row].Cells[col].Value != null)
+                                {
+                                    if (i == 0)
+                                    {
+                                        wynik = Convert.ToInt32(DataGrid.Rows[row].Cells[col].Value);
+                                    }
+                                    else
+                                    {
+                                        wynik /= Convert.ToInt32(DataGrid.Rows[row].Cells[col].Value);
+                                    }
+                                }
+                                else
+                                {
+                                    wynik += 0;
+                                }
                             }
                             else
                             {
-                                wynik /= Convert.ToInt32(sp[i]);
+                                Console.WriteLine("Błąd");
                             }
                         }
                         label2.Text = (wynik).ToString();
@@ -136,23 +172,11 @@ namespace Excel
                         int wynik = 0;
                         for (int i = 0; i < sp.Length; i++)
                         {
-                            if (sp[i].Contains("+"))
-                            {
-                                var susp = sp[i].Split("+");
-                                if (i != 0)
-                                {
-                                    wynik -= Convert.ToInt32(susp[0]);
-                                }
-                                for (int j = 1; j < susp.Length; j++)
-                                {
-                                    wynik += Convert.ToInt32(susp[j]);
-                                }
-                            }
-                            else
+                            if (sp[i].All(char.IsDigit))
                             {
                                 if (a.Remove(0, 1)[0] == '-' && i == 0)
                                 {
-                                    wynik -= Convert.ToInt32(sp[i+1]);
+                                    wynik -= Convert.ToInt32(sp[i + 1]);
                                     i++;
                                 }
                                 else if (i == 0)
@@ -164,6 +188,40 @@ namespace Excel
                                     wynik -= Convert.ToInt32(sp[i]);
                                 }
                             }
+                            else if (sp[i].All(char.IsLetter))
+                            {
+                                Console.WriteLine("kol");
+                            }
+                            else if (sp[i].Length == 2)
+                            {
+                                int col = ((int)sp[i][0] - 65);
+                                int row = (sp[i][1]) - 49;
+                                if(DataGrid.Rows[row].Cells[col].Value != null)
+                                {
+                                    string cellV = DataGrid.Rows[row].Cells[col].Value.ToString();
+                                    if (cellV.Length >= 2 && cellV.Remove(0, 1)[0] == '-' && i == 0)
+                                    {
+                                        wynik -= Convert.ToInt32(cellV);
+                                        i++;
+                                    }
+                                    else if (i == 0)
+                                    {
+                                        wynik += Convert.ToInt32(cellV);
+                                    }
+                                    else
+                                    {
+                                        wynik -= Convert.ToInt32(cellV);
+                                    }
+                                }
+                                else
+                                {
+                                    wynik += 0;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Błąd");
+                            }
                         }
                         label2.Text = (wynik).ToString();
                         tak = false;
@@ -174,18 +232,30 @@ namespace Excel
                         int wynik = 0;
                         for(int i = 0; i< sp.Length; i++)
                         {
-                            if (sp[i].Contains("-"))
+                            if (sp[i].All(char.IsDigit))
                             {
-                                var susp = sp[i].Split("-");
-                                wynik += Convert.ToInt32(susp[0]);
-                                for (int j =1; j< susp.Length; j++)
+                                wynik += Convert.ToInt32(sp[i]);
+                            }
+                            else if (sp[i].All(char.IsLetter))
+                            {
+                                Console.WriteLine("kol");
+                            }
+                            else if (sp[i].Length == 2)
+                            {
+                                int col = ((int)sp[i][0] - 65);
+                                int row = (sp[i][1]) - 49;
+                                if (DataGrid.Rows[row].Cells[col].Value != null)
                                 {
-                                    wynik -= Convert.ToInt32(susp[j]);
+                                    wynik += Convert.ToInt32(DataGrid.Rows[row].Cells[col].Value);
+                                }
+                                else
+                                {
+                                    wynik += 0;
                                 }
                             }
                             else
                             {
-                                wynik += Convert.ToInt32(sp[i]);
+                                Console.WriteLine("Błąd");
                             }
                         }
                         label2.Text = (wynik).ToString();
