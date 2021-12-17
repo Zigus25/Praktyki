@@ -7,9 +7,13 @@ namespace Excel
     public class Logic
     {
         DataTable DataGrid = new DataTable();
-        public string Rozpoznaj(DataTable dt, string a)
+        int Cr = 0;
+        int Cc = 0;
+        public string Rozpoznaj(DataTable dt, string a,int Crow,int Ccol)
         {
             DataGrid = dt;
+            Cr = Crow;
+            Cc = Ccol;
             string wynik = string.Empty;
             bool tak = true;
             if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")") && tak)
@@ -73,19 +77,28 @@ namespace Excel
                 {
                     for (int i = row1; i <= row2; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        if (Cc != col1 && Cr != i)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        }
                     }
                 }
                 else if (row1 > row2)
                 {
                     for (int i = row2; i <= row1; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        if (Cc != col1 && Cr != i)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        }
                     }
                 }
                 else
                 {
-                    wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
+                    if (Cc != col1 && Cr != row1)
+                    {
+                        wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
+                    }
                 }
             }
             else if (col1 < col2)
@@ -96,7 +109,10 @@ namespace Excel
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][j]);
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
                         }
                     }
                 }
@@ -106,7 +122,10 @@ namespace Excel
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][j]);
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
                         }
                     }
                 }
@@ -114,7 +133,10 @@ namespace Excel
                 {
                     for (int i = col1; i <= col2; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
+                        if (Cc != i && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        }
                     }
                 }
             }
@@ -126,7 +148,10 @@ namespace Excel
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][j]);
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
                         }
                     }
                 }
@@ -136,7 +161,10 @@ namespace Excel
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][j]);
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
                         }
                     }
                 }
@@ -144,7 +172,10 @@ namespace Excel
                 {
                     for (int i = col2; i <= col1; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
+                        if (Cc != i && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                        }
                     }
                 }
             }
@@ -169,21 +200,31 @@ namespace Excel
                 {
                     for (int i = row1; i <= row2; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                        count++;
+                        if (Cc != col1 && Cr != i)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                            count++;
+                        }
                     }
                 }
                 else if (row1 > row2)
                 {
                     for (int i = row2; i <= row1; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                        count++;
+                        if (Cc != col1 && Cr != i)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                            count++;
+                        }
                     }
                 }
                 else
                 {
-                    wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
+                    if (Cc != col1 && Cr != row1)
+                    {
+                        wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
+                        count++;
+                    }
                 }
             }
             else if (col1 < col2)
@@ -194,8 +235,11 @@ namespace Excel
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)j].ToString());
-                            count++;
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
                         }
                     }
                 }
@@ -205,8 +249,11 @@ namespace Excel
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)j].ToString());
-                            count++;
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
                         }
                     }
                 }
@@ -214,8 +261,11 @@ namespace Excel
                 {
                     for (int i = col1; i <= col2; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
-                        count++;
+                        if (Cc != i && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                            count++;
+                        }
                     }
                 }
             }
@@ -227,8 +277,11 @@ namespace Excel
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)j].ToString());
-                            count++;
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
                         }
                     }
                 }
@@ -238,8 +291,11 @@ namespace Excel
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)j].ToString());
-                            count++;
+                            if (Cc != j && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
                         }
                     }
                 }
@@ -247,8 +303,11 @@ namespace Excel
                 {
                     for (int i = col2; i <= col1; i++)
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
-                        count++;
+                        if (Cc != i && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                            count++;
+                        }
                     }
                 }
             }
@@ -260,7 +319,7 @@ namespace Excel
         {
             long wynik = 0;
             int potega = 0;
-            int podstawa;
+            int podstawa = 1;
 
             string avg = a.Substring(5, a.Length - 6);
             var sp = avg.Split(",");
@@ -272,8 +331,11 @@ namespace Excel
             else
             {
                 int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
-                podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1; 
+                if (Cc != col1 && Cr != row1)
+                {
+                    potega = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                }
             }
             if (sp[1].All(char.IsDigit))
             {
@@ -283,7 +345,10 @@ namespace Excel
             {
                 int col2 = sp[1][0] - 65;
                 int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
-                potega = Convert.ToInt32(DataGrid.Rows[row2][col2]);
+                if (Cc != col2 && Cr != row2)
+                {
+                    potega = Convert.ToInt32(DataGrid.Rows[row2][col2]);
+                }
             }
             return Math.Pow(podstawa, potega).ToString();
         }
@@ -291,7 +356,7 @@ namespace Excel
         public string Root(string a)
         {
             long wynik = 0;
-            int podstawa;
+            int podstawa = 1;
 
             string avg = a.Substring(6, a.Length - 7);
             var sp = avg.Split(",");
@@ -303,8 +368,11 @@ namespace Excel
             else
             {
                 int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
-                podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1; 
+                if (Cc != col1 && Cr != row1)
+                {
+                    podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                }
             }
             return Math.Sqrt(podstawa).ToString();
         }
@@ -327,7 +395,7 @@ namespace Excel
                 {
                     int col = ((int)sp[i][0] - 65);
                     int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null)
+                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
                     {
                         wynik += Convert.ToDouble(DataGrid.Rows[row][col]);
                     }
@@ -374,7 +442,7 @@ namespace Excel
                 {
                     int col = ((int)sp[i][0] - 65);
                     int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null)
+                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
                     {
                         string cellV = DataGrid.Rows[row][col].ToString();
                         if (cellV.Length >= 2 && cellV.Remove(0, 1)[0] == '-' && i == 0)
@@ -422,7 +490,7 @@ namespace Excel
                 {
                     int col = ((int)sp[i][0] - 65);
                     int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null)
+                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
                     {
                         wynik *= Convert.ToDecimal(DataGrid.Rows[row][col]);
                     }
@@ -464,7 +532,7 @@ namespace Excel
                 {
                     int col = ((int)sp[i][0] - 65);
                     int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null)
+                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
                     {
                         if (i == 0)
                         {
