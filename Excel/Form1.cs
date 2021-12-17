@@ -13,18 +13,18 @@ namespace Excel
             InitializeComponent();
             CreateTable();
         }
-        
+
         public void CreateTable()
         {
-            for(int i = 0; i < 26; i++)
+            for (int i = 0; i < 26; i++)
             {
-                DataGrid.Columns.Add(((char)(65+i)).ToString(), ((char)(65+i)).ToString());
+                DataGrid.Columns.Add(((char)(65 + i)).ToString(), ((char)(65 + i)).ToString());
             }
         }
 
         private void New_Click(object sender, EventArgs e)
         {
-            DataGrid.Rows.Clear(); 
+            DataGrid.Rows.Clear();
             for (int i = 0; i < 50; i++)
             {
                 DataGrid.Rows.Add();
@@ -34,7 +34,7 @@ namespace Excel
 
         private void Sava_Click(object sender, EventArgs e)
         {
-            if(!baza)
+            if (!baza)
             {
                 using (SaveFileDialog openFileDialog = new SaveFileDialog())
                 {
@@ -71,21 +71,21 @@ namespace Excel
 
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
             int x = (DataGrid.CurrentCell.RowIndex + 1);
             string Kol = DataGrid.CurrentCell.OwningColumn.Name;
             Komurka.Text = (Kol + x);
             bool tak = true;
-            if (DataGrid.CurrentCell.Value!=null)
+            if (DataGrid.CurrentCell.Value != null)
             {
                 string a = DataGrid.CurrentCell.Value.ToString();
                 if (a.StartsWith("="))
                 {
-                    if (a.StartsWith("=Suma(")&& a.Contains(":") && a.EndsWith(")"))
+                    if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")"))
                     {
                         double wynik = 0.0;
 
-                        string sum = a.Substring(6, a.Length-7);
+                        string sum = a.Substring(6, a.Length - 7);
                         var sp = sum.Split(":");
 
                         int col1 = sp[0][0] - 65;
@@ -93,16 +93,16 @@ namespace Excel
                         int col2 = sp[1][0] - 65;
                         int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
 
-                        if (col1==col2)
+                        if (col1 == col2)
                         {
-                            if (row1<row2)
+                            if (row1 < row2)
                             {
                                 for (int i = row1; i <= row2; i++)
                                 {
                                     wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[col1].Value);
                                 }
                             }
-                            else if (row1>row2)
+                            else if (row1 > row2)
                             {
                                 for (int i = row2; i <= row1; i++)
                                 {
@@ -114,7 +114,7 @@ namespace Excel
                                 wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
                             }
                         }
-                        else if (col1<col2)
+                        else if (col1 < col2)
                         {
                             if (row1 < row2)
                             {
@@ -138,7 +138,7 @@ namespace Excel
                             }
                             else
                             {
-                                for (int i = col1;i<=col2;i++)
+                                for (int i = col1; i <= col2; i++)
                                 {
                                     wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
                                 }
@@ -177,6 +177,112 @@ namespace Excel
                         label2.Text = wynik.ToString();
                         tak = false;
                     }
+                    if (a.StartsWith("=Avg(") && a.Contains(":") && a.EndsWith(")"))
+                    {
+                        double wynik = 0.0;
+                        int count = 1;
+
+                        string avg = a.Substring(5, a.Length - 6);
+                        var sp = avg.Split(":");
+
+                        int col1 = sp[0][0] - 65;
+                        int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
+                        int col2 = sp[1][0] - 65;
+                        int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
+                        if (col1 == col2)
+                        {
+                            if (row1 < row2)
+                            {
+                                for (int i = row1; i <= row2; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[col1].Value);
+                                    count++;
+                                }
+                            }
+                            else if (row1 > row2)
+                            {
+                                for (int i = row2; i <= row1; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[col1].Value);
+                                    count++;
+                                }
+                            }
+                            else
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                            }
+                        }
+                        else if (col1 < col2)
+                        {
+                            if (row1 < row2)
+                            {
+                                for (int j = col1; j <= col2; j++)
+                                {
+                                    for (int i = row1; i <= row2; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                        count++;
+                                    }
+                                }
+                            }
+                            else if (row1 > row2)
+                            {
+                                for (int j = col1; j <= col2; j++)
+                                {
+                                    for (int i = row2; i <= row1; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                        count++;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = col1; i <= col2; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                                    count++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (row1 < row2)
+                            {
+                                for (int j = col2; j <= col1; j++)
+                                {
+                                    for (int i = row1; i <= row2; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                        count++;
+                                    }
+                                }
+                            }
+                            else if (row1 > row2)
+                            {
+                                for (int j = col2; j <= col1; j++)
+                                {
+                                    for (int i = row2; i <= row1; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                        count++;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = col2; i <= col1; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                                    count++;
+                                }
+                            }
+                        }
+                        wynik = wynik / count;
+                        Console.WriteLine(wynik);
+                        label2.Text = wynik.ToString();
+                        tak = false;
+                    }
                     if (a.Contains("*") && tak)
                     {
                         var sp = a.Remove(0, 1).Split("*");
@@ -195,7 +301,7 @@ namespace Excel
                             {
                                 int col = ((int)sp[i][0] - 65);
                                 int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                                if (DataGrid.Rows[row].Cells[col].Value!=null)
+                                if (DataGrid.Rows[row].Cells[col].Value != null)
                                 {
                                     wynik *= Convert.ToDouble(DataGrid.Rows[row].Cells[col].Value);
                                 }
@@ -323,9 +429,9 @@ namespace Excel
                     }
                     if (a.Contains("+") && tak)
                     {
-                        var sp = a.Remove(0,1).Split("+");
+                        var sp = a.Remove(0, 1).Split("+");
                         double wynik = 0.0;
-                        for (int i = 0; i< sp.Length; i++)
+                        for (int i = 0; i < sp.Length; i++)
                         {
                             if (sp[i].All(char.IsDigit))
                             {
@@ -338,7 +444,7 @@ namespace Excel
                             else if (sp[i].Length > 1 && sp[i].Length < 4)
                             {
                                 int col = ((int)sp[i][0] - 65);
-                                int row = Convert.ToInt32(sp[i].Remove(0, 1))-1;
+                                int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
                                 if (DataGrid.Rows[row].Cells[col].Value != null)
                                 {
                                     wynik += Convert.ToDouble(DataGrid.Rows[row].Cells[col].Value);
