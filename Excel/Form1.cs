@@ -81,7 +81,7 @@ namespace Excel
                 string a = DataGrid.CurrentCell.Value.ToString();
                 if (a.StartsWith("="))
                 {
-                    if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")"))
+                    if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")") && tak)
                     {
                         double wynik = 0.0;
 
@@ -177,7 +177,7 @@ namespace Excel
                         label2.Text = wynik.ToString();
                         tak = false;
                     }
-                    if (a.StartsWith("=Avg(") && a.Contains(":") && a.EndsWith(")"))
+                    if (a.StartsWith("=Avg(") && a.Contains(":") && a.EndsWith(")") && tak)
                     {
                         double wynik = 0.0;
                         int count = 1;
@@ -283,15 +283,68 @@ namespace Excel
                         label2.Text = wynik.ToString();
                         tak = false;
                     }
+                    if (a.StartsWith("=Pow(") && a.Contains(",") && a.EndsWith(")") && tak)
+                    {
+                        long wynik = 0;
+                        int potega = 0;
+                        int podstawa;
+
+                        string avg = a.Substring(5, a.Length - 6);
+                        var sp = avg.Split(",");
+
+                        if (sp[0].All(char.IsDigit))
+                        {
+                            podstawa = Convert.ToInt32(sp[1]);
+                        }
+                        else
+                        {
+                            int col1 = sp[0][0] - 65;
+                            int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
+                            podstawa = Convert.ToInt32(DataGrid.Rows[row1].Cells[col1].Value);
+                        }
+                        if (sp[1].All(char.IsDigit))
+                        {
+                            potega = Convert.ToInt32(sp[1]);
+                        }
+                        else
+                        {
+                            int col2 = sp[1][0] - 65;
+                            int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
+                            potega = Convert.ToInt32(DataGrid.Rows[row2].Cells[col2].Value);
+                        }
+                        label2.Text = Math.Pow(podstawa,potega).ToString();
+                        tak = false;
+                    }
+                    if (a.StartsWith("=Root(") && a.EndsWith(")") && tak) 
+                    {
+                        long wynik = 0;
+                        int podstawa;
+
+                        string avg = a.Substring(6, a.Length - 7);
+                        var sp = avg.Split(",");
+
+                        if (sp[0].All(char.IsDigit))
+                        {
+                            podstawa = Convert.ToInt32(sp[1]);
+                        }
+                        else
+                        {
+                            int col1 = sp[0][0] - 65;
+                            int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
+                            podstawa = Convert.ToInt32(DataGrid.Rows[row1].Cells[col1].Value);
+                        }
+                        label2.Text = Math.Sqrt(podstawa).ToString();
+                        tak = false;
+                    }
                     if (a.Contains("*") && tak)
                     {
                         var sp = a.Remove(0, 1).Split("*");
-                        double wynik = 1.0;
+                        decimal wynik = 1;
                         for (int i = 0; i < sp.Length; i++)
                         {
                             if (sp[i].All(char.IsDigit))
                             {
-                                wynik *= Convert.ToDouble(sp[i]);
+                                wynik *= Convert.ToDecimal(sp[i]);
                             }
                             else if (sp[i].All(char.IsLetter))
                             {
@@ -303,7 +356,7 @@ namespace Excel
                                 int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
                                 if (DataGrid.Rows[row].Cells[col].Value != null)
                                 {
-                                    wynik *= Convert.ToDouble(DataGrid.Rows[row].Cells[col].Value);
+                                    wynik *= Convert.ToDecimal(DataGrid.Rows[row].Cells[col].Value);
                                 }
                                 else
                                 {
