@@ -97,7 +97,8 @@ namespace Excel
                             dt.Rows[dt.Rows.Count - 1][cell.ColumnIndex] = cell.Value.ToString();
                         }
                     }
-                    label2.Text = log.Rozpoznaj(dt, a);
+                    int y = Kol[0] - 65;
+                    label2.Text = log.Rozpoznaj(dt, a,x,y);
                 }
                 else
                 {
