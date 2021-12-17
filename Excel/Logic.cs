@@ -9,7 +9,7 @@ namespace Excel
         DataTable DataGrid = new DataTable();
         int Cr = 0;
         int Cc = 0;
-        public string Rozpoznaj(DataTable dt, string a,int Crow,int Ccol)
+        public string Rozpoznaj(DataTable dt, string a, int Crow, int Ccol)
         {
             DataGrid = dt;
             Cr = Crow;
@@ -190,9 +190,9 @@ namespace Excel
             string avg = a.Substring(5, a.Length - 6);
             var sp = avg.Split(":");
 
-            int col1 = sp[0][0]-65;
+            int col1 = sp[0][0] - 65;
             int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
-            int col2 = sp[1][0]-65;
+            int col2 = sp[1][0] - 65;
             int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
             if (col1 == col2)
             {
@@ -331,7 +331,7 @@ namespace Excel
             else
             {
                 int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1; 
+                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
                 if (Cc != col1 && Cr != row1)
                 {
                     potega = Convert.ToInt32(DataGrid.Rows[row1][col1]);
@@ -368,7 +368,7 @@ namespace Excel
             else
             {
                 int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1; 
+                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
                 if (Cc != col1 && Cr != row1)
                 {
                     podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
