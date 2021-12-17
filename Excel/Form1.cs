@@ -91,20 +91,91 @@ namespace Excel
                         int col1 = sp[0][0] - 65;
                         int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
                         int col2 = sp[1][0] - 65;
-                        int row = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
+                        int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
 
                         if (col1==col2)
                         {
-                            
+                            if (row1<row2)
+                            {
+                                for (int i = row1; i <= row2; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[col1].Value);
+                                }
+                            }
+                            else if (row1>row2)
+                            {
+                                for (int i = row2; i <= row1; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[col1].Value);
+                                }
+                            }
+                            else
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                            }
                         }
                         else if (col1<col2)
                         {
-
+                            if (row1 < row2)
+                            {
+                                for (int j = col1; j <= col2; j++)
+                                {
+                                    for (int i = row1; i <= row2; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                    }
+                                }
+                            }
+                            else if (row1 > row2)
+                            {
+                                for (int j = col1; j <= col2; j++)
+                                {
+                                    for (int i = row2; i <= row1; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = col1;i<=col2;i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                                }
+                            }
                         }
                         else
                         {
-
+                            if (row1 < row2)
+                            {
+                                for (int j = col2; j <= col1; j++)
+                                {
+                                    for (int i = row1; i <= row2; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                    }
+                                }
+                            }
+                            else if (row1 > row2)
+                            {
+                                for (int j = col2; j <= col1; j++)
+                                {
+                                    for (int i = row2; i <= row1; i++)
+                                    {
+                                        wynik += Convert.ToDouble(DataGrid.Rows[i].Cells[j].Value);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = col2; i <= col1; i++)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[row1].Cells[col1].Value);
+                                }
+                            }
                         }
+                        label2.Text = wynik.ToString();
+                        tak = false;
                     }
                     if (a.Contains("*") && tak)
                     {
