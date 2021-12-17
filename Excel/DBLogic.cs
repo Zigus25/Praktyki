@@ -183,7 +183,6 @@ namespace Excel
             command.Prepare();
 
             var Data = row.Split(";");
-            Console.WriteLine(Data.Length);
             for(int i = 0; i < Data.Length-1; i++)
             {
                 command.Parameters[i].Value = Data[i];
