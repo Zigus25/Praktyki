@@ -76,38 +76,47 @@ namespace Excel
             int x = (DataGrid.CurrentCell.RowIndex + 1);
             string Kol = DataGrid.CurrentCell.OwningColumn.Name;
             Komurka.Text = (Kol + x);
-            bool tak = true;
-            if (DataGrid.CurrentCell.Value != null)
+
+            try
             {
-                string a = DataGrid.CurrentCell.Value.ToString(); 
-                
-                if (a.StartsWith("="))
+                if (DataGrid.CurrentCell.Value != null)
                 {
-                    DataTable dt = new DataTable();
-                    foreach (DataGridViewColumn column in DataGrid.Columns)
+                    string a = DataGrid.CurrentCell.Value.ToString();
+
+                    if (a.StartsWith("="))
                     {
-                        dt.Columns.Add(column.HeaderText);
-                    }
-                    foreach (DataGridViewRow row in DataGrid.Rows)
-                    {
-                        dt.Rows.Add();
-                        foreach (DataGridViewCell cell in row.Cells)
+                        DataTable dt = new DataTable();
+                        foreach (DataGridViewColumn column in DataGrid.Columns)
                         {
-                            dt.Rows[dt.Rows.Count - 1][cell.ColumnIndex] = cell.Value.ToString();
+                            dt.Columns.Add(column.HeaderText);
                         }
+                        foreach (DataGridViewRow row in DataGrid.Rows)
+                        {
+                            dt.Rows.Add();
+                            foreach (DataGridViewCell cell in row.Cells)
+                            {
+                                dt.Rows[dt.Rows.Count - 1][cell.ColumnIndex] = cell.Value.ToString();
+                            }
+                        }
+                        int y = Kol[0] - 65;
+                        label2.Text = a;
+                        DataGrid.CurrentCell.Value = log.Rozpoznaj(dt, a, x, y);
                     }
-                    int y = Kol[0] - 65;
-                    label2.Text = log.Rozpoznaj(dt, a,x,y);
+                    else
+                    {
+                        label2.Text = a;
+                    }
                 }
                 else
                 {
-                    label2.Text = a;
+                    label2.Text = "";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                label2.Text = "";
+                label2.Text = "Error";
             }
+
         }
 
         private void Load_Click(object sender, EventArgs e)

@@ -1,14 +1,13 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace Excel
 {
     public class DBLogic
     {
         SqliteConnection sqlite_conn;
-        public void CreateConnection( string path )
+        public void CreateConnection(string path)
         {
 
             SqliteConnection conn;
@@ -36,12 +35,12 @@ namespace Excel
             {
                 throw ex;
             }
-            
+
         }
 
         public void Table()
         {
-            SqliteCommand sqlite_cmd; 
+            SqliteCommand sqlite_cmd;
             string Createsql = "CREATE TABLE IF NOT EXISTS Tabela(A VARCHAR(255), B VARCHAR(255), C VARCHAR(255), D VARCHAR(255), E VARCHAR(255), F VARCHAR(255), G VARCHAR(255), H VARCHAR(255), I VARCHAR(255), J VARCHAR(255), K VARCHAR(255), L VARCHAR(255), M VARCHAR(255), N VARCHAR(255), O VARCHAR(255), P VARCHAR(255), Q VARCHAR(255), R VARCHAR(255), S VARCHAR(255), T VARCHAR(255), U VARCHAR(255), V VARCHAR(255), W VARCHAR(255), X VARCHAR(255), Y VARCHAR(255), Z VARCHAR(255))";
             sqlite_cmd = sqlite_conn.CreateCommand();
             sqlite_cmd.CommandText = Createsql;
@@ -112,7 +111,7 @@ namespace Excel
             command.Parameters.Add(Z);
             command.Prepare();
 
-            for(int j = 0; j < 50; j++)
+            for (int j = 0; j < 50; j++)
             {
                 for (int i = 0; i < 26; i++)
                 {
@@ -124,7 +123,7 @@ namespace Excel
 
         public void AddData(string row, int RowID)
         {
-            SqliteCommand command = new SqliteCommand(null,sqlite_conn);
+            SqliteCommand command = new SqliteCommand(null, sqlite_conn);
             command.CommandText = "UPDATE Tabela SET (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z) = (@A,@B,@C,@D,@E,@F,@G,@H,@I,@J,@K,@L,@M,@N,@O,@P,@Q,@R,@S,@T,@U,@V,@W,@X,@Y,@Z) WHERE ROWID = @RID";
             SqliteParameter A = new SqliteParameter("@A", SqliteType.Text, 256);
             SqliteParameter B = new SqliteParameter("@B", SqliteType.Text, 256);
@@ -183,7 +182,7 @@ namespace Excel
             command.Prepare();
 
             var Data = row.Split(";");
-            for(int i = 0; i < Data.Length-1; i++)
+            for (int i = 0; i < Data.Length - 1; i++)
             {
                 command.Parameters[i].Value = Data[i];
             }
