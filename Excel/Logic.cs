@@ -5,7 +5,7 @@ using System.Linq;
 namespace Excel
 {
     public class Logic
-    { //Rozpoczecie dnia
+    {
         DataTable DataGrid = new DataTable();
         int Cr = 0;
         int Cc = 0;
@@ -16,44 +16,100 @@ namespace Excel
             Cc = Ccol;
             string wynik = string.Empty;
             bool tak = true;
-            if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")") && tak)
+            try
             {
-                wynik = Suma(a);
-                tak = false;
+                if (a.StartsWith("=Suma(") && a.Contains(":") && a.EndsWith(")") && tak)
+                {
+                    wynik = Suma(a);
+                    tak = false;
+                }
             }
-            if (a.StartsWith("=Avg(") && a.Contains(":") && a.EndsWith(")") && tak)
+            catch (Exception e)
             {
-                wynik = AVG(a);
-                tak = false;
+                return "Error";
             }
-            if (a.StartsWith("=Pow(") && a.Contains(",") && a.EndsWith(")") && tak)
+            try
             {
-                wynik = Pow(a);
-                tak = false;
+                if (a.StartsWith("=Avg(") && a.Contains(":") && a.EndsWith(")") && tak)
+                {
+                    wynik = AVG(a);
+                    tak = false;
+                }
             }
-            if (a.StartsWith("=Root(") && a.EndsWith(")") && tak)
+            catch (Exception e)
             {
-                wynik = Root(a);
-                tak = false;
+                return "Error";
             }
-            if (a.Contains("*") && tak)
+            try
             {
-                wynik = Multiply(a);
-                tak = false;
+                if (a.StartsWith("=Pow(") && a.Contains(",") && a.EndsWith(")") && tak)
+                {
+                    wynik = Pow(a);
+                    tak = false;
+                }
             }
-            if (a.Contains("/") && tak)
+            catch (Exception e)
             {
-                wynik = Divide(a);
-                tak = false;
+                return "Error";
             }
-            if (a.Contains("-") && tak)
+            try
             {
-                wynik = Substract(a);
-                tak = false;
+                if (a.StartsWith("=Root(") && a.EndsWith(")") && tak)
+                {
+                    wynik = Root(a);
+                    tak = false;
+                }
             }
-            if (a.Contains("+") && tak)
+            catch (Exception e)
             {
-                wynik = Add(a);
+                return "Error";
+            }
+            try
+            {
+                if (a.Contains("*") && tak)
+                {
+                    wynik = Multiply(a);
+                    tak = false;
+                }
+            }
+            catch (Exception e)
+            {
+                return "Error";
+            }
+            try
+            {
+                if (a.Contains("/") && tak)
+                {
+                    wynik = Divide(a);
+                    tak = false;
+                }
+            }
+            catch (Exception e)
+            {
+                return "Error";
+            }
+            try
+            {
+                if (a.Contains("-") && tak)
+                {
+                    wynik = Substract(a);
+                    tak = false;
+                }
+            }
+            catch (Exception e)
+            {
+                return "Error";
+            }
+            try
+            {
+                if (a.Contains("+") && tak)
+                {
+                    wynik = Add(a);
+                }
+            }
+            catch (Exception e)
+            {
+                return "Error";
             }
 
             return wynik;
@@ -71,58 +127,71 @@ namespace Excel
             int col2 = sp[1][0] - 65;
             int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
 
-            if (col1 == col2)
+            try
             {
-                if (row1 < row2)
+                if (col1 == col2)
                 {
-                    for (int i = row1; i <= row2; i++)
-                    {
-                        if (Cc != col1 && Cr != i)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
-                        }
-                    }
-                }
-                else if (row1 > row2)
-                {
-                    for (int i = row2; i <= row1; i++)
-                    {
-                        if (Cc != col1 && Cr != i)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
-                        }
-                    }
-                }
-                else
-                {
-                    if (Cc != col1 && Cr != row1)
-                    {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
-                    }
-                }
-            }
-            else if (col1 < col2)
-            {
-                if (row1 < row2)
-                {
-                    for (int j = col1; j <= col2; j++)
+                    if (row1 < row2)
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            if (Cc != j && Cr != i)
+                            if (Cc != col1 && Cr != i)
                             {
                                 wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
                             }
                         }
                     }
-                }
-                else if (row1 > row2)
-                {
-                    for (int j = col1; j <= col2; j++)
+                    else if (row1 > row2)
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            if (Cc != j && Cr != i)
+                            if (Cc != col1 && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Cc != col1 && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[row1][col1]);
+                        }
+                    }
+                }
+                else if (col1 < col2)
+                {
+                    if (row1 < row2)
+                    {
+                        for (int j = col1; j <= col2; j++)
+                        {
+                            for (int i = row1; i <= row2; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                                }
+                            }
+                        }
+                    }
+                    else if (row1 > row2)
+                    {
+                        for (int j = col1; j <= col2; j++)
+                        {
+                            for (int i = row2; i <= row1; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = col1; i <= col2; i++)
+                        {
+                            if (Cc != i && Cr != row1)
                             {
                                 wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
                             }
@@ -131,55 +200,49 @@ namespace Excel
                 }
                 else
                 {
-                    for (int i = col1; i <= col2; i++)
+                    if (row1 < row2)
                     {
-                        if (Cc != i && Cr != row1)
+                        for (int j = col2; j <= col1; j++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            for (int i = row1; i <= row2; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                                }
+                            }
+                        }
+                    }
+                    else if (row1 > row2)
+                    {
+                        for (int j = col2; j <= col1; j++)
+                        {
+                            for (int i = row2; i <= row1; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = col2; i <= col1; i++)
+                        {
+                            if (Cc != i && Cr != row1)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
+                            }
                         }
                     }
                 }
+                return wynik.ToString();
             }
-            else
+            catch (Exception e)
             {
-                if (row1 < row2)
-                {
-                    for (int j = col2; j <= col1; j++)
-                    {
-                        for (int i = row1; i <= row2; i++)
-                        {
-                            if (Cc != j && Cr != i)
-                            {
-                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
-                            }
-                        }
-                    }
-                }
-                else if (row1 > row2)
-                {
-                    for (int j = col2; j <= col1; j++)
-                    {
-                        for (int i = row2; i <= row1; i++)
-                        {
-                            if (Cc != j && Cr != i)
-                            {
-                                wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = col2; i <= col1; i++)
-                    {
-                        if (Cc != i && Cr != row1)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][col1]);
-                        }
-                    }
-                }
+                return "Error";
             }
-            return wynik.ToString();
         }
 
         public string AVG(string a)
@@ -194,62 +257,77 @@ namespace Excel
             int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
             int col2 = sp[1][0] - 65;
             int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
-            if (col1 == col2)
+
+            try
             {
-                if (row1 < row2)
+                if (col1 == col2)
                 {
-                    for (int i = row1; i <= row2; i++)
-                    {
-                        if (Cc != col1 && Cr != i)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                            count++;
-                        }
-                    }
-                }
-                else if (row1 > row2)
-                {
-                    for (int i = row2; i <= row1; i++)
-                    {
-                        if (Cc != col1 && Cr != i)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                            count++;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Cc != col1 && Cr != row1)
-                    {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
-                        count++;
-                    }
-                }
-            }
-            else if (col1 < col2)
-            {
-                if (row1 < row2)
-                {
-                    for (int j = col1; j <= col2; j++)
+                    if (row1 < row2)
                     {
                         for (int i = row1; i <= row2; i++)
                         {
-                            if (Cc != j && Cr != i)
+                            if (Cc != col1 && Cr != i)
                             {
                                 wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
                                 count++;
                             }
                         }
                     }
-                }
-                else if (row1 > row2)
-                {
-                    for (int j = col1; j <= col2; j++)
+                    else if (row1 > row2)
                     {
                         for (int i = row2; i <= row1; i++)
                         {
-                            if (Cc != j && Cr != i)
+                            if (Cc != col1 && Cr != i)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Cc != col1 && Cr != row1)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[row1][(char)col1].ToString());
+                            count++;
+                        }
+                    }
+                }
+                else if (col1 < col2)
+                {
+                    if (row1 < row2)
+                    {
+                        for (int j = col1; j <= col2; j++)
+                        {
+                            for (int i = row1; i <= row2; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    else if (row1 > row2)
+                    {
+                        for (int j = col1; j <= col2; j++)
+                        {
+                            for (int i = row2; i <= row1; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = col1; i <= col2; i++)
+                        {
+                            if (Cc != i && Cr != row1)
                             {
                                 wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
                                 count++;
@@ -259,60 +337,53 @@ namespace Excel
                 }
                 else
                 {
-                    for (int i = col1; i <= col2; i++)
+                    if (row1 < row2)
                     {
-                        if (Cc != i && Cr != row1)
+                        for (int j = col2; j <= col1; j++)
                         {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                            count++;
+                            for (int i = row1; i <= row2; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    else if (row1 > row2)
+                    {
+                        for (int j = col2; j <= col1; j++)
+                        {
+                            for (int i = row2; i <= row1; i++)
+                            {
+                                if (Cc != j && Cr != i)
+                                {
+                                    wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = col2; i <= col1; i++)
+                        {
+                            if (Cc != i && Cr != row1)
+                            {
+                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
+                                count++;
+                            }
                         }
                     }
                 }
+                wynik = wynik / count;
+                return wynik.ToString();
             }
-            else
+            catch (Exception e)
             {
-                if (row1 < row2)
-                {
-                    for (int j = col2; j <= col1; j++)
-                    {
-                        for (int i = row1; i <= row2; i++)
-                        {
-                            if (Cc != j && Cr != i)
-                            {
-                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                                count++;
-                            }
-                        }
-                    }
-                }
-                else if (row1 > row2)
-                {
-                    for (int j = col2; j <= col1; j++)
-                    {
-                        for (int i = row2; i <= row1; i++)
-                        {
-                            if (Cc != j && Cr != i)
-                            {
-                                wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                                count++;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = col2; i <= col1; i++)
-                    {
-                        if (Cc != i && Cr != row1)
-                        {
-                            wynik += Convert.ToDouble(DataGrid.Rows[i][(char)col1].ToString());
-                            count++;
-                        }
-                    }
-                }
+                return "Error";
             }
-            wynik = wynik / count;
-            return wynik.ToString();
         }
 
         public string Pow(string a)
@@ -324,33 +395,40 @@ namespace Excel
             string avg = a.Substring(5, a.Length - 6);
             var sp = avg.Split(",");
 
-            if (sp[0].All(char.IsDigit))
+            try
             {
-                podstawa = Convert.ToInt32(sp[1]);
-            }
-            else
-            {
-                int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
-                if (Cc != col1 && Cr != row1)
+                if (sp[0].All(char.IsDigit))
                 {
-                    potega = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                    podstawa = Convert.ToInt32(sp[1]);
                 }
-            }
-            if (sp[1].All(char.IsDigit))
-            {
-                potega = Convert.ToInt32(sp[1]);
-            }
-            else
-            {
-                int col2 = sp[1][0] - 65;
-                int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
-                if (Cc != col2 && Cr != row2)
+                else
                 {
-                    potega = Convert.ToInt32(DataGrid.Rows[row2][col2]);
+                    int col1 = sp[0][0] - 65;
+                    int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
+                    if (Cc != col1 && Cr != row1)
+                    {
+                        potega = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                    }
                 }
+                if (sp[1].All(char.IsDigit))
+                {
+                    potega = Convert.ToInt32(sp[1]);
+                }
+                else
+                {
+                    int col2 = sp[1][0] - 65;
+                    int row2 = Convert.ToInt32(sp[1].Remove(0, 1)) - 1;
+                    if (Cc != col2 && Cr != row2)
+                    {
+                        potega = Convert.ToInt32(DataGrid.Rows[row2][col2]);
+                    }
+                }
+                return Math.Pow(podstawa, potega).ToString();
             }
-            return Math.Pow(podstawa, potega).ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
 
         public string Root(string a)
@@ -361,199 +439,238 @@ namespace Excel
             string avg = a.Substring(6, a.Length - 7);
             var sp = avg.Split(",");
 
-            if (sp[0].All(char.IsDigit))
+            try
             {
-                podstawa = Convert.ToInt32(sp[1]);
-            }
-            else
-            {
-                int col1 = sp[0][0] - 65;
-                int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
-                if (Cc != col1 && Cr != row1)
+                if (sp[0].All(char.IsDigit))
                 {
-                    podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                    podstawa = Convert.ToInt32(sp[1]);
                 }
+                else
+                {
+                    int col1 = sp[0][0] - 65;
+                    int row1 = Convert.ToInt32(sp[0].Remove(0, 1)) - 1;
+                    if (Cc != col1 && Cr != row1)
+                    {
+                        podstawa = Convert.ToInt32(DataGrid.Rows[row1][col1]);
+                    }
+                }
+                return Math.Sqrt(podstawa).ToString();
             }
-            return Math.Sqrt(podstawa).ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
 
         public string Add(string a)
         {
             var sp = a.Remove(0, 1).Split("+");
             double wynik = 0.0;
-            for (int i = 0; i < sp.Length; i++)
+
+            try
             {
-                if (sp[i].All(char.IsDigit))
+                for (int i = 0; i < sp.Length; i++)
                 {
-                    wynik += Convert.ToDouble(sp[i]);
-                }
-                else if (sp[i].All(char.IsLetter))
-                {
-                    Console.WriteLine("kol");
-                }
-                else if (sp[i].Length > 1 && sp[i].Length < 4)
-                {
-                    int col = ((int)sp[i][0] - 65);
-                    int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                    if (sp[i].All(char.IsDigit))
                     {
-                        wynik += Convert.ToDouble(DataGrid.Rows[row][col]);
+                        wynik += Convert.ToDouble(sp[i]);
+                    }
+                    else if (sp[i].All(char.IsLetter))
+                    {
+                        Console.WriteLine("kol");
+                    }
+                    else if (sp[i].Length > 1 && sp[i].Length < 4)
+                    {
+                        int col = ((int)sp[i][0] - 65);
+                        int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
+                        if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                        {
+                            wynik += Convert.ToDouble(DataGrid.Rows[row][col]);
+                        }
+                        else
+                        {
+                            wynik += 0;
+                        }
                     }
                     else
                     {
-                        wynik += 0;
+                        Console.WriteLine("Błąd");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Błąd");
-                }
+                return wynik.ToString();
             }
-            return wynik.ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
 
         public string Substract(string a)
         {
             var sp = a.Remove(0, 1).Split("-");
             double wynik = 0.0;
-            for (int i = 0; i < sp.Length; i++)
+
+            try
             {
-                if (sp[i].All(char.IsDigit))
+                for (int i = 0; i < sp.Length; i++)
                 {
-                    if (a.Remove(0, 1)[0] == '-' && i == 0)
+                    if (sp[i].All(char.IsDigit))
                     {
-                        wynik -= Convert.ToDouble(sp[i + 1]);
-                        i++;
-                    }
-                    else if (i == 0)
-                    {
-                        wynik += Convert.ToDouble(sp[i]);
-                    }
-                    else
-                    {
-                        wynik -= Convert.ToDouble(sp[i]);
-                    }
-                }
-                else if (sp[i].All(char.IsLetter))
-                {
-                    Console.WriteLine("kol");
-                }
-                else if (sp[i].Length > 1 && sp[i].Length < 4)
-                {
-                    int col = ((int)sp[i][0] - 65);
-                    int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
-                    {
-                        string cellV = DataGrid.Rows[row][col].ToString();
-                        if (cellV.Length >= 2 && cellV.Remove(0, 1)[0] == '-' && i == 0)
+                        if (a.Remove(0, 1)[0] == '-' && i == 0)
                         {
-                            wynik -= Convert.ToDouble(cellV);
+                            wynik -= Convert.ToDouble(sp[i + 1]);
                             i++;
                         }
                         else if (i == 0)
                         {
-                            wynik += Convert.ToDouble(cellV);
+                            wynik += Convert.ToDouble(sp[i]);
                         }
                         else
                         {
-                            wynik -= Convert.ToDouble(cellV);
+                            wynik -= Convert.ToDouble(sp[i]);
+                        }
+                    }
+                    else if (sp[i].All(char.IsLetter))
+                    {
+                        Console.WriteLine("kol");
+                    }
+                    else if (sp[i].Length > 1 && sp[i].Length < 4)
+                    {
+                        int col = ((int)sp[i][0] - 65);
+                        int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
+                        if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                        {
+                            string cellV = DataGrid.Rows[row][col].ToString();
+                            if (cellV.Length >= 2 && cellV.Remove(0, 1)[0] == '-' && i == 0)
+                            {
+                                wynik -= Convert.ToDouble(cellV);
+                                i++;
+                            }
+                            else if (i == 0)
+                            {
+                                wynik += Convert.ToDouble(cellV);
+                            }
+                            else
+                            {
+                                wynik -= Convert.ToDouble(cellV);
+                            }
+                        }
+                        else
+                        {
+                            wynik += 0;
                         }
                     }
                     else
                     {
-                        wynik += 0;
+                        Console.WriteLine("Błąd");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Błąd");
-                }
+                return wynik.ToString();
             }
-            return wynik.ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
 
         public string Multiply(string a)
         {
             var sp = a.Remove(0, 1).Split("*");
             decimal wynik = 1;
-            for (int i = 0; i < sp.Length; i++)
+
+            try
             {
-                if (sp[i].All(char.IsDigit))
+                for (int i = 0; i < sp.Length; i++)
                 {
-                    wynik *= Convert.ToDecimal(sp[i]);
-                }
-                else if (sp[i].All(char.IsLetter))
-                {
-                    Console.WriteLine("kol");
-                }
-                else if (sp[i].Length > 1 && sp[i].Length < 4)
-                {
-                    int col = ((int)sp[i][0] - 65);
-                    int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                    if (sp[i].All(char.IsDigit))
                     {
-                        wynik *= Convert.ToDecimal(DataGrid.Rows[row][col]);
+                        wynik *= Convert.ToDecimal(sp[i]);
+                    }
+                    else if (sp[i].All(char.IsLetter))
+                    {
+                        Console.WriteLine("kol");
+                    }
+                    else if (sp[i].Length > 1 && sp[i].Length < 4)
+                    {
+                        int col = ((int)sp[i][0] - 65);
+                        int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
+                        if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                        {
+                            wynik *= Convert.ToDecimal(DataGrid.Rows[row][col]);
+                        }
+                        else
+                        {
+                            wynik *= 1;
+                        }
                     }
                     else
                     {
-                        wynik *= 1;
+                        Console.WriteLine("Błąd");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Błąd");
-                }
+                return wynik.ToString();
             }
-            return wynik.ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
 
         public string Divide(string a)
         {
             var sp = a.Remove(0, 1).Split("/");
             double wynik = 0.0;
-            for (int i = 0; i < sp.Length; i++)
+
+            try
             {
-                if (sp[i].All(char.IsDigit))
+                for (int i = 0; i < sp.Length; i++)
                 {
-                    if (i == 0)
-                    {
-                        wynik = Convert.ToDouble(sp[i]);
-                    }
-                    else
-                    {
-                        wynik /= Convert.ToDouble(sp[i]);
-                    }
-                }
-                else if (sp[i].All(char.IsLetter))
-                {
-                    Console.WriteLine("kol");
-                }
-                else if (sp[i].Length > 1 && sp[i].Length < 4)
-                {
-                    int col = ((int)sp[i][0] - 65);
-                    int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
-                    if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                    if (sp[i].All(char.IsDigit))
                     {
                         if (i == 0)
                         {
-                            wynik = Convert.ToDouble(DataGrid.Rows[row][col]);
+                            wynik = Convert.ToDouble(sp[i]);
                         }
                         else
                         {
-                            wynik /= Convert.ToDouble(DataGrid.Rows[row][col]);
+                            wynik /= Convert.ToDouble(sp[i]);
+                        }
+                    }
+                    else if (sp[i].All(char.IsLetter))
+                    {
+                        Console.WriteLine("kol");
+                    }
+                    else if (sp[i].Length > 1 && sp[i].Length < 4)
+                    {
+                        int col = ((int)sp[i][0] - 65);
+                        int row = Convert.ToInt32(sp[i].Remove(0, 1)) - 1;
+                        if (DataGrid.Rows[row][col] != null || Cc != col && Cr != row)
+                        {
+                            if (i == 0)
+                            {
+                                wynik = Convert.ToDouble(DataGrid.Rows[row][col]);
+                            }
+                            else
+                            {
+                                wynik /= Convert.ToDouble(DataGrid.Rows[row][col]);
+                            }
+                        }
+                        else
+                        {
+                            wynik += 0;
                         }
                     }
                     else
                     {
-                        wynik += 0;
+                        Console.WriteLine("Błąd");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Błąd");
-                }
+                return wynik.ToString();
             }
-            return wynik.ToString();
+            catch (Exception e)
+            {
+                return "Error";
+            }
         }
     }
 }
