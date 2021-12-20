@@ -5,7 +5,7 @@ using System.Linq;
 namespace Excel
 {
     public class Logic
-    {
+    { //Rozpoczecie dnia
         DataTable DataGrid = new DataTable();
         int Cr = 0;
         int Cc = 0;
