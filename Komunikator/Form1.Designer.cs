@@ -28,84 +28,106 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Messages = new System.Windows.Forms.ListBox();
+            this.TIP = new System.Windows.Forms.TextBox();
+            this.ZIP = new System.Windows.Forms.TextBox();
+            this.text = new System.Windows.Forms.TextBox();
+            this.TPO = new System.Windows.Forms.NumericUpDown();
+            this.ZPO = new System.Windows.Forms.NumericUpDown();
+            this.wyslij = new System.Windows.Forms.Button();
+            this.Polaczenie = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TPO)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZPO)).BeginInit();
             this.SuspendLayout();
             // 
-            // listBox1
+            // Messages
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(12, 75);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(776, 289);
-            this.listBox1.TabIndex = 0;
+            this.Messages.FormattingEnabled = true;
+            this.Messages.ItemHeight = 15;
+            this.Messages.Location = new System.Drawing.Point(12, 75);
+            this.Messages.Name = "Messages";
+            this.Messages.Size = new System.Drawing.Size(776, 289);
+            this.Messages.TabIndex = 0;
             // 
-            // textBox1
+            // TIP
             // 
-            this.textBox1.Location = new System.Drawing.Point(99, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 23);
-            this.textBox1.TabIndex = 1;
+            this.TIP.Location = new System.Drawing.Point(99, 12);
+            this.TIP.Name = "TIP";
+            this.TIP.Size = new System.Drawing.Size(100, 23);
+            this.TIP.TabIndex = 1;
             // 
-            // textBox2
+            // ZIP
             // 
-            this.textBox2.Location = new System.Drawing.Point(99, 46);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 23);
-            this.textBox2.TabIndex = 2;
+            this.ZIP.Location = new System.Drawing.Point(99, 46);
+            this.ZIP.Name = "ZIP";
+            this.ZIP.Size = new System.Drawing.Size(100, 23);
+            this.ZIP.TabIndex = 2;
             // 
-            // textBox3
+            // text
             // 
-            this.textBox3.Location = new System.Drawing.Point(12, 402);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(467, 23);
-            this.textBox3.TabIndex = 3;
+            this.text.Location = new System.Drawing.Point(12, 402);
+            this.text.Name = "text";
+            this.text.Size = new System.Drawing.Size(467, 23);
+            this.text.TabIndex = 3;
             // 
-            // numericUpDown1
+            // TPO
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(251, 12);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(44, 23);
-            this.numericUpDown1.TabIndex = 4;
+            this.TPO.Location = new System.Drawing.Point(251, 12);
+            this.TPO.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.TPO.Name = "TPO";
+            this.TPO.Size = new System.Drawing.Size(44, 23);
+            this.TPO.TabIndex = 4;
+            this.TPO.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
             // 
-            // numericUpDown2
+            // ZPO
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(251, 46);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(44, 23);
-            this.numericUpDown2.TabIndex = 5;
+            this.ZPO.Location = new System.Drawing.Point(251, 46);
+            this.ZPO.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.ZPO.Name = "ZPO";
+            this.ZPO.Size = new System.Drawing.Size(44, 23);
+            this.ZPO.TabIndex = 5;
+            this.ZPO.Value = new decimal(new int[] {
+            80,
+            0,
+            0,
+            0});
             // 
-            // button1
+            // wyslij
             // 
-            this.button1.Location = new System.Drawing.Point(713, 402);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Wyślij";
-            this.button1.UseVisualStyleBackColor = true;
+            this.wyslij.Location = new System.Drawing.Point(713, 402);
+            this.wyslij.Name = "wyslij";
+            this.wyslij.Size = new System.Drawing.Size(75, 23);
+            this.wyslij.TabIndex = 6;
+            this.wyslij.Text = "Wyślij";
+            this.wyslij.UseVisualStyleBackColor = true;
+            this.wyslij.Click += new System.EventHandler(this.wyslij_Click);
             // 
-            // button2
+            // Polaczenie
             // 
-            this.button2.Location = new System.Drawing.Point(335, 27);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(144, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Nawiąż połączenie";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Polaczenie.Location = new System.Drawing.Point(335, 27);
+            this.Polaczenie.Name = "Polaczenie";
+            this.Polaczenie.Size = new System.Drawing.Size(144, 23);
+            this.Polaczenie.TabIndex = 7;
+            this.Polaczenie.Text = "Nawiąż połączenie";
+            this.Polaczenie.UseVisualStyleBackColor = true;
+            this.Polaczenie.Click += new System.EventHandler(this.Polaczenie_Click);
             // 
             // label1
             // 
@@ -115,7 +137,6 @@
             this.label1.Size = new System.Drawing.Size(56, 15);
             this.label1.TabIndex = 8;
             this.label1.Text = "Twoje IP :";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -125,7 +146,6 @@
             this.label2.Size = new System.Drawing.Size(87, 15);
             this.label2.TabIndex = 9;
             this.label2.Text = "IP Znajomego :";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -164,18 +184,18 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.Polaczenie);
+            this.Controls.Add(this.wyslij);
+            this.Controls.Add(this.ZPO);
+            this.Controls.Add(this.TPO);
+            this.Controls.Add(this.text);
+            this.Controls.Add(this.ZIP);
+            this.Controls.Add(this.TIP);
+            this.Controls.Add(this.Messages);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TPO)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZPO)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,14 +203,14 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ListBox Messages;
+        private System.Windows.Forms.TextBox TIP;
+        private System.Windows.Forms.TextBox ZIP;
+        private System.Windows.Forms.TextBox text;
+        private System.Windows.Forms.NumericUpDown TPO;
+        private System.Windows.Forms.NumericUpDown ZPO;
+        private System.Windows.Forms.Button wyslij;
+        private System.Windows.Forms.Button Polaczenie;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
