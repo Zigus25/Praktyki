@@ -12,6 +12,7 @@ namespace Komunikator
         IPEndPoint epLocal;
         Socket sck;
         IPHostEntry host;
+
         public Form1()
         {
             InitializeComponent();
@@ -22,7 +23,6 @@ namespace Komunikator
             TIP.Text = GetLocalIP();
             ZIP.Text = GetLocalIP();
         }
-
 
         private string GetLocalIP()
         {
